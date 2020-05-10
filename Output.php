@@ -14,6 +14,11 @@ class Output {
 
     static function out($text) {
         self::init();
-        echo $text.PHP_EOL;
+        if (is_string($text)) {
+          echo $text.PHP_EOL;
+        } else {
+          print_r($text);
+          echo PHP_EOL;
+        }
     }
 }
