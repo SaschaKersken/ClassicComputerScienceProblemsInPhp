@@ -51,54 +51,54 @@ class MCState {
       return $this->boat;
     }
   }
-}
 
-$goalTest = function(MCState $state): bool {
-  return $state->isLegal() && $state->em == MAX_NUM && $state->ec == MAX_NUM;
-};
-
-$successors = function(MCState $state): array {
-  $sucs = [];
-  if ($state->boat) {
-    if ($state->wm > 1) {
-      $sucs[] = new MCState($state->wm - 2, $state->wc, !$state->boat);
-    }
-    if ($state->wm > 0) {
-      $sucs[] = new MCState($state->wm - 1, $state->wc, !$state->boat);
-    }
-    if ($state->wc > 1) {
-      $sucs[] = new MCState($state->wm, $state->wc - 2, !$state->boat);
-    }
-    if ($state->wc > 0) {
-      $sucs[] = new MCState($state->wm, $state->wc - 1, !$state->boat);
-    }
-    if ($state->wc > 0 && $state->wm > 0) {
-      $sucs[] = new MCState($state->wm - 1, $state->wc - 1, !$state->boat);
-    }
-  } else {
-    if ($state->em > 1) {
-      $sucs[] = new MCState($state->wm + 2, $state->wc, !$state->boat);
-    }
-    if ($state->em > 0) {
-      $sucs[] = new MCState($state->wm + 1, $state->wc, !$state->boat);
-    }
-    if ($state->ec > 1) {
-      $sucs[] = new MCState($state->wm, $state->wc + 2, !$state->boat);
-    }
-    if ($state->ec > 0) {
-      $sucs[] = new MCState($state->wm, $state->wc + 1, !$state->boat);
-    }
-    if ($state->ec > 0 && $state->em > 0) {
-      $sucs[] = new MCState($state->wm + 1, $state->wc + 1, !$state->boat);
-    }
+  public static function goalTest(MCState $state): bool {
+    return $state->isLegal() && $state->em == MAX_NUM && $state->ec == MAX_NUM;
   }
-  return array_filter(
-    $sucs,
-    function($state) {
-      return $state->isLegal();
+
+  public static function successors(MCState $state): array {
+    $sucs = [];
+    if ($state->boat) {
+      if ($state->wm > 1) {
+        $sucs[] = new MCState($state->wm - 2, $state->wc, !$state->boat);
+      }
+      if ($state->wm > 0) {
+        $sucs[] = new MCState($state->wm - 1, $state->wc, !$state->boat);
+      }
+      if ($state->wc > 1) {
+        $sucs[] = new MCState($state->wm, $state->wc - 2, !$state->boat);
+      }
+      if ($state->wc > 0) {
+        $sucs[] = new MCState($state->wm, $state->wc - 1, !$state->boat);
+      }
+      if ($state->wc > 0 && $state->wm > 0) {
+        $sucs[] = new MCState($state->wm - 1, $state->wc - 1, !$state->boat);
+      }
+    } else {
+      if ($state->em > 1) {
+        $sucs[] = new MCState($state->wm + 2, $state->wc, !$state->boat);
+      }
+      if ($state->em > 0) {
+        $sucs[] = new MCState($state->wm + 1, $state->wc, !$state->boat);
+      }
+      if ($state->ec > 1) {
+        $sucs[] = new MCState($state->wm, $state->wc + 2, !$state->boat);
+      }
+      if ($state->ec > 0) {
+        $sucs[] = new MCState($state->wm, $state->wc + 1, !$state->boat);
+      }
+      if ($state->ec > 0 && $state->em > 0) {
+        $sucs[] = new MCState($state->wm + 1, $state->wc + 1, !$state->boat);
+      }
     }
-  );
-};
+    return array_filter(
+      $sucs,
+      function($state) {
+        return $state->isLegal();
+      }
+    );
+  }
+}
 
 function displaySolution(array $path) {
   if (count($path) == 0) {
@@ -118,7 +118,7 @@ function displaySolution(array $path) {
 }
 
 $start = new MCState(MAX_NUM, MAX_NUM, TRUE);
-$solution = bfs($start, $goalTest, $successors);
+$solution = bfs($start, ['MCState', 'goalTest'], ['MCState', 'successors']);
 if (is_null($solution)) {
   Output::out('No solution found!');
 } else {

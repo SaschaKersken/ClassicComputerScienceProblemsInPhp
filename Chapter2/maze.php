@@ -48,27 +48,27 @@ class Maze {
     $this->randomlyFill($rows, $columns, $sparseness);
     $this->_grid[$this->start->row][$this->start->column] = Cell::START;
     $this->_grid[$this->goal->row][$this->goal->column] = Cell::GOAL;
+  }
 
-    $this->goalTest = function(MazeLocation $ml): bool {
-      return $ml == $this->goal;
-    };
+  public function goalTest(MazeLocation $ml): bool {
+    return $ml == $this->goal;
+  }
 
-    $this->successors = function(MazeLocation $ml): array {
-      $locations = [];
-      if ($ml->row + 1 < $this->rows && $this->_grid[$ml->row + 1][$ml->column] != Cell::BLOCKED) {
-        $locations[] = new MazeLocation($ml->row + 1, $ml->column);
-      }
-      if ($ml->row -1 >= 0 && $this->_grid[$ml->row - 1][$ml->column] != Cell::BLOCKED) {
-        $locations[] = new MazeLocation($ml->row - 1, $ml->column);
-      }
-      if ($ml->column + 1 < $this->columns && $this->_grid[$ml->row][$ml->column + 1] != Cell::BLOCKED) {
-        $locations[] = new MazeLocation($ml->row, $ml->column + 1);
-      }
-      if ($ml->column - 1 >= 0 && $this->_grid[$ml->row][$ml->column - 1] != Cell::BLOCKED) {
-        $locations[] = new MazeLocation($ml->row, $ml->column - 1);
-      }
-      return $locations;
-    };
+  public function successors(MazeLocation $ml): array {
+    $locations = [];
+    if ($ml->row + 1 < $this->rows && $this->_grid[$ml->row + 1][$ml->column] != Cell::BLOCKED) {
+      $locations[] = new MazeLocation($ml->row + 1, $ml->column);
+    }
+    if ($ml->row -1 >= 0 && $this->_grid[$ml->row - 1][$ml->column] != Cell::BLOCKED) {
+      $locations[] = new MazeLocation($ml->row - 1, $ml->column);
+    }
+    if ($ml->column + 1 < $this->columns && $this->_grid[$ml->row][$ml->column + 1] != Cell::BLOCKED) {
+      $locations[] = new MazeLocation($ml->row, $ml->column + 1);
+    }
+    if ($ml->column - 1 >= 0 && $this->_grid[$ml->row][$ml->column - 1] != Cell::BLOCKED) {
+      $locations[] = new MazeLocation($ml->row, $ml->column - 1);
+    }
+    return $locations;
   }
 
   private function randomlyFill(int $rows, int $columns, float $sparseness) {
@@ -133,7 +133,7 @@ function manhattanDistance(MazeLocation $goal) {
 $m = new Maze();
 Output::out($m);
 Output::out('Depth-first search:');
-$solution1 = dfs($m->getStart(), $m->goalTest, $m->successors);
+$solution1 = dfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
 if (is_null($solution1)) {
   Output::out('Found no solution using DFS');
 } else {
@@ -143,7 +143,7 @@ if (is_null($solution1)) {
   $m->clear($path1);
 }
 Output::out('Breadth-first search:');
-$solution2 = bfs($m->getStart(), $m->goalTest, $m->successors);
+$solution2 = bfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
 if (is_null($solution2)) {
   Output::out('Found no solution using BFS.');
 } else {
@@ -154,7 +154,7 @@ if (is_null($solution2)) {
 }
 Output::out('A* with euclidian distance');
 $distance = euclidianDistance($m->getGoal());
-$solution3 = astar($m->getStart(), $m->goalTest, $m->successors, $distance);
+$solution3 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
 if (is_null($solution3)) {
   Output::out('Found no solution using A* with euclidian distance');
 } else {
@@ -165,7 +165,7 @@ if (is_null($solution3)) {
 }
 Output::out('A* with Manhattan distance');
 $distance = manhattanDistance($m->getGoal());
-$solution4 = astar($m->getStart(), $m->goalTest, $m->successors, $distance);
+$solution4 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
 if (is_null($solution4)) {
   Output::out('Found no solution using A* with Manhattan distance');
 } else {
