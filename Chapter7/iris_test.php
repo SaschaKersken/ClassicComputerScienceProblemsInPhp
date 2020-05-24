@@ -12,7 +12,7 @@ $irisFile = fopen(__DIR__.'/iris.csv', 'r');
 while ($iris = fgetcsv($irisFile)) {
   $irises[] = $iris;
 }
-//shuffle($irises);
+shuffle($irises);
 foreach ($irises as $iris) {
   $parameters = array_slice($iris, 0, 4);
   $irisParameters[] = $parameters;
@@ -56,4 +56,11 @@ $irisResults = $irisNetwork->validate(
   $irisTestersCorrects,
   'irisInterpretOutput'
 );
-Output::out(vsprintf("%d correct of %d = %.2f%%", $irisResults));
+Output::out(
+  sprintf(
+    "%d correct of %d = %.2f%%",
+    $irisResults[0],
+    $irisResults[1],
+    $irisResults[2] * 100
+  )
+);
