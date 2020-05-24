@@ -72,18 +72,6 @@ private $counter = 0;
     }
   }
 
-  public function dotProduct($vector1, $vector2) {
-    return array_sum(
-      array_map(
-        function($value, $index) use($vector2) {
-          return $value * $vector2[$index];
-        },
-        $vector1,
-        array_keys($vector1)
-      )
-    );
-  }
-
   public abstract function createNeuron(array $weights, float $learningRate);
 
   public abstract function derivativeActivationFunction(float $x): float;
