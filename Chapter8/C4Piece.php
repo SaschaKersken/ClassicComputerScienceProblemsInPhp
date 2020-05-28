@@ -13,7 +13,7 @@ class C4Piece implements Piece {
     $this->current = $current;
   }
 
-  public function opposite(): C4Piece {
+  public function opposite(): Piece {
     switch ($this->current) {
     case self::B:
       return new C4Piece(self::R);

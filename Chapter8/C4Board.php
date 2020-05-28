@@ -69,9 +69,18 @@ class C4Board implements Board {
     return [$blackCount, $redCount];
   }
 
+private function _segmentToString($segment) {
+  $result = '<';
+  foreach ($segment as list($column, $row)) {
+    $result .= $this->position[$column][$row]->value();
+  }
+  $result .= '>';
+  return $result;
+}
   public function isWin(): bool {
     foreach ($this->getSegments() as $segment) {
       list($blackCount, $redCount) = $this->countSegment($segment);
+//if ($blackCount > 0 || $redCount > 0) { printf("%s - Black: %d - Red: %d\n", $this->_segmentToString($segment), $blackCount, $redCount); }
       if ($blackCount == 4 || $redCount == 4) {
         return TRUE;
       }
@@ -145,10 +154,10 @@ class C4Board implements Board {
 
     for ($c = 0; $c <= self::NUM_COLUMNS - self::SEGMENT_LENGTH; $c++) {
       for ($r = 0; $r <= self::NUM_ROWS - self::SEGMENT_LENGTH; $r++) {
-        $segemt = [];
+        $segment = [];
         for ($t = 0; $t < self::SEGMENT_LENGTH; $t++) {
           $segment[] = [$c + $t, $r + $t];
-        }
+        } 
         self::$segments[] = $segment;
       }
     }

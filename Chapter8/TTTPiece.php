@@ -13,7 +13,7 @@ class TTTPiece implements Piece {
     $this->current = $current;
   }
 
-  public function opposite(): TTTPiece {
+  public function opposite(): Piece {
     switch ($this->current) {
     case self::X:
       return new TTTPiece(self::O);
