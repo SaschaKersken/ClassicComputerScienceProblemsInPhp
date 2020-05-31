@@ -2,28 +2,48 @@
 
 require_once(__DIR__.'/KnapsackItem.php');
 
+/**
+* Knapsack class
+*
+* Implementation of the knapsack problem using dynamic programming
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class Knapsack {
+  /**
+  * Available items
+  * @var array of KnapsackItem elements
+  */
   private $items = [];
-  private $maxCapacity = 0;
 
-  public function __construct(array $items, int $maxCapacity) {
+  /**
+  * Constructor
+  *
+  * @param array $items Available items
+  */
+  public function __construct(array $items) {
     $this->items = $items;
-    $this->maxCapacity = $maxCapacity;
   }
 
-  public function run(): array {
+  /**
+  * Run the algorithm
+  *
+  * @param int $maxCapacity Maximum capacity of the knapsack to use
+  * @return array Optimal set of items to put into knapsack
+  */
+  public function run(int $maxCapacity): array {
     // Build up dynamic programming table
     $table = array_fill(
       0,
       count($this->items),
       array_fill(
         0,
-        $this->maxCapacity + 1,
+        $maxCapacity + 1,
         0.0
       )
     );
     foreach ($this->items as $i => $item) {
-      for ($capacity = 1; $capacity <= $this->maxCapacity; $capacity++) {
+      for ($capacity = 1; $capacity <= $maxCapacity; $capacity++) {
         $previousItemsValue = $table[$i][$capacity];
         if ($capacity >= $item->weight) { // item fits in knapsack
           $valueFreeingWeightForItem = $table[$i][$capacity - $item->weight];
@@ -39,7 +59,7 @@ class Knapsack {
     }
     // figure out solution from table
     $solution = [];
-    $capacity = $this->maxCapacity;
+    $capacity = $maxCapacity;
     for ($i = count($this->items); $i > 0; $i--) { // work backwards
       // was this item used?
       if ($table[$i - 1][$capacity] != $table[$i][$capacity]) {
@@ -49,5 +69,14 @@ class Knapsack {
       }
     }
     return $solution;
+  }
+
+  /**
+  * Set a different list of available items
+  *
+  * @param array $items The new list of items
+  */
+  public function setItems(array $items) {
+    $this->items = $items;
   }
 }

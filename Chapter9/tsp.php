@@ -2,16 +2,23 @@
 
 require_once(__DIR__.'/../Output.php');
 
-function permutations($items, &$result, $perms = []) {
+/**
+* Generate all possible permutations of an array
+*
+* @param array $items The array to generate permutations for
+* @param array &$result Array variable to store the result in
+* @param array $permutations optional, default empty array
+*/
+function permutations($items, &$result, $permutations = []) {
   if (empty($items)) {
-    $result[] = $perms;
+    $result[] = $permutations;
   } else {
     for ($i = count($items) - 1; $i >= 0; $i--) {
       $newItems = $items;
-      $newPerms = $perms;
-      list($foo) = array_splice($newItems, $i, 1);
-      array_unshift($newPerms, $foo);
-      permutations($newItems, $result, $newPerms);
+      $newPermutations = $permutations;
+      list($temp) = array_splice($newItems, $i, 1);
+      array_unshift($newPermutations, $temp);
+      permutations($newItems, $result, $newPermutations);
     }
   }
 }

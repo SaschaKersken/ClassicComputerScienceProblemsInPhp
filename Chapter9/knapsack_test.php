@@ -16,8 +16,8 @@ $items = [
   new KnapsackItem("refrigerator", 200, 700),
   new KnapsackItem("painting", 10, 1000)
 ];
-$knapsack = new Knapsack($items, 75);
-$result = $knapsack->run();
+$knapsack = new Knapsack($items);
+$result = $knapsack->run(75);
 foreach ($result as $item) {
   Output::out(
     sprintf("%s (weight %d, value %d)", $item->name, $item->weight, $item->value)
