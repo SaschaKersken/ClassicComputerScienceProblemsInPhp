@@ -1,59 +1,99 @@
 <?php
 
-require_once(__DIR__.'/generic_search.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/Cell.php');
+require_once(__DIR__.'/MazeLocation.php');
 
-class Cell {
-  const EMPTY = ' ';
-  const BLOCKED = 'X';
-  const START = 'S';
-  const GOAL = 'G';
-  const PATH = '*';
-}
-
-class MazeLocation {
-  public $row = 0;
-  public $column = 0;
-
-  public function __construct($row, $column) {
-    $this->row = $row;
-    $this->column = $column;
-  }
-}
-
+/**
+* Maze class
+*
+* Represents a maze, i.e. a grid of cells with various states
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class Maze {
+  /**
+  * Number of rows
+  * @var int
+  */
   private $rows = 10;
-  private $columns = 10;
-  private $sparseness = 0.2;
-  private $start = NULL;
-  private $goal = NULL;
-  private $_grid = [];
-  public $goalTest = NULL;
-  public $successors = NULL;
-  public $euclidianDistance = NULL;
-  public $manhattanDistance = NULL;
 
-  public function __construct($rows = 10, $columns = 10, $sparseness = 0.2, $start = NULL, $goal = NULL) {
+  /**
+  * Number of columns
+  * @var int
+  */
+  private $columns = 10;
+
+  /**
+  * How sparsely the maze is to be filled with blocked cells
+  * @var float
+  */
+  private $sparseness = 0.2;
+
+  /**
+  * Start location
+  * @var MazeLocation
+  */
+  private $start = NULL;
+
+  /**
+  * Goal location
+  * @var MazeLocation
+  */
+  private $goal = NULL;
+
+  /**
+  * Internal representation of the grid
+  * @var array
+  */
+  private $_grid = [];
+  //public $goalTest = NULL;
+  //public $successors = NULL;
+
+  /**
+  * Constructor
+  *
+  * @param int $rows Number of rows optional, default 10
+  * @param int $columns Number of columns optional, default 10
+  * @param float $sparseness Probability for a cell to be blocked optional, default 0.2
+  * @param MazeLocation $start Start location optional, default NULL
+  * @param MazeLocation $goal Goal locationoptional, default NULL
+  */
+  public function __construct(int $rows = 10, int $columns = 10, float $sparseness = 0.2, MazeLocation $start = NULL, MazeLocation $goal = NULL) {
     $this->rows = $rows;
     $this->columns = $columns;
     $this->sparseness = 0.2;
     $this->start = $start ? $start : new MazeLocation(0, 0);
     $this->goal = $goal ? $goal : new MazeLocation(9, 9);
+    // Fill the grid with empty cells
     for ($i = 0; $i < $rows; $i++) {
       $this->_grid[$i] = [];
       for ($j = 0; $j < $columns; $j++) {
         $this->_grid[$i][$j] = Cell::EMPTY;
       }
     }
+    // Populate the grid with blocked cells
     $this->randomlyFill($rows, $columns, $sparseness);
+    // Fill the start and goal locations in
     $this->_grid[$this->start->row][$this->start->column] = Cell::START;
     $this->_grid[$this->goal->row][$this->goal->column] = Cell::GOAL;
   }
 
+  /**
+  * Is a specific maze location the goal?
+  *
+  * @param MazeLocation $ml The maze location to test
+  * @return bool TRUE if this is the goal, otherwise FALSE
+  */
   public function goalTest(MazeLocation $ml): bool {
     return $ml == $this->goal;
   }
 
+  /**
+  * Find all possible successors of current location (non-blocked neighbors)
+  *
+  * @param MazeLocation $ml The maze location to find successors for
+  * @return array The list of possible successors
+  */
   public function successors(MazeLocation $ml): array {
     $locations = [];
     if ($ml->row + 1 < $this->rows && $this->_grid[$ml->row + 1][$ml->column] != Cell::BLOCKED) {
@@ -71,6 +111,13 @@ class Maze {
     return $locations;
   }
 
+  /**
+  * Randomly fill with blocked cells
+  *
+  * @param int $rows Number of rows
+  * @param int $columns Number of columns
+  * @param float $sparseness Probability for each cell to be blocked
+  */
   private function randomlyFill(int $rows, int $columns, float $sparseness) {
     for ($row = 0; $row < $rows; $row++) {
       for ($column = 0; $column < $columns; $column++) {
@@ -81,7 +128,12 @@ class Maze {
     }
   }
 
-  public function __toString() {
+  /**
+  * Return a nicely formatted version of the maze for printing
+  *
+  * @return string The string representation
+  */
+  public function __toString(): string {
     $output = '';
     foreach ($this->_grid as $row) {
       $output .= implode('', $row)."\n";
@@ -89,6 +141,11 @@ class Maze {
     return $output;
   }
 
+  /**
+  * Mark a path in the maze
+  *
+  * @param array $path The maze locations that make up the path
+  */
   public function mark(array $path) {
     foreach ($path as $mazeLocation) {
       $this->_grid[$mazeLocation->row][$mazeLocation->column] = Cell::PATH;
@@ -97,6 +154,11 @@ class Maze {
     $this->_grid[$this->goal->row][$this->goal->column] = Cell::GOAL;
   }
 
+  /**
+  * Reset a path in the maze
+  *
+  * @param array $path The maze locations that make up the path
+  */
   public function clear(array $path) {
     foreach ($path as $mazeLocation) {
       $this->_grid[$mazeLocation->row][$mazeLocation->column] = Cell::EMPTY;
@@ -105,72 +167,21 @@ class Maze {
     $this->_grid[$this->goal->row][$this->goal->column] = Cell::GOAL;
   }
 
-  public function getStart() {
+  /**
+  * Get the start location
+  *
+  * @return MazeLocation The start location
+  */
+  public function getStart(): MazeLocation {
     return $this->start;
   }
 
+  /**
+  * Get the goal location
+  *
+  * @return MazeLocation The goal location
+  */
   public function getGoal() {
     return $this->goal;
   }
-}
-
-function euclidianDistance(MazeLocation $goal) {
-  return function(MazeLocation $ml) use($goal): float {
-    $xdist = $ml->column - $goal->column;
-    $ydist = $ml->row - $goal->row;
-    return sqrt(($xdist * $xdist) + ($ydist * $ydist));
-  };
-}
-
-function manhattanDistance(MazeLocation $goal) {
-  return function(MazeLocation $ml) use($goal): float {
-    $xdist = abs($ml->column - $goal->column);
-    $ydist = abs($ml->row - $goal->row);
-    return $xdist + $ydist;
-  };
-}
-
-$m = new Maze();
-Output::out($m);
-Output::out('Depth-first search:');
-$solution1 = dfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
-if (is_null($solution1)) {
-  Output::out('Found no solution using DFS');
-} else {
-  $path1 = nodeToPath($solution1);
-  $m->mark($path1);
-  Output::out($m);
-  $m->clear($path1);
-}
-Output::out('Breadth-first search:');
-$solution2 = bfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
-if (is_null($solution2)) {
-  Output::out('Found no solution using BFS.');
-} else {
-  $path2 = nodeToPath($solution2);
-  $m->mark($path2);
-  Output::out($m);
-  $m->clear($path2);
-}
-Output::out('A* with euclidian distance');
-$distance = euclidianDistance($m->getGoal());
-$solution3 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
-if (is_null($solution3)) {
-  Output::out('Found no solution using A* with euclidian distance');
-} else {
-  $path3 = nodeToPath($solution3);
-  $m->mark($path3);
-  Output::out($m);
-  $m->clear($path3);
-}
-Output::out('A* with Manhattan distance');
-$distance = manhattanDistance($m->getGoal());
-$solution4 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
-if (is_null($solution4)) {
-  Output::out('Found no solution using A* with Manhattan distance');
-} else {
-  $path4 = nodeToPath($solution4);
-  $m->mark($path4);
-  Output::out($m);
-  $m->clear($path4);
 }

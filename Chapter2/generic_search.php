@@ -1,5 +1,19 @@
 <?php
 
+require_once(__DIR__.'/SearchState.php');
+require_once(__DIR__.'/Node.php');
+require_once(__DIR__.'/Stack.php');
+require_once(__DIR__.'/Queue.php');
+require_once(__DIR__.'/PriorityQueue.php');
+
+/**
+* Generic search library
+*
+* Usage: require_once('[path/]generic_search.php');
+*/
+
+require_once(__DIR__.'/Stack.php');
+
 function linearContains($iterable, $key): bool {
   foreach ($iterable as $item) {
     if ($item == $key) {
@@ -25,88 +39,123 @@ function binaryContains($sequence, $key): bool {
   return FALSE;
 }
 
-class Stack {
-  protected $_container = [];
-
-  public function __get($key) {
-    if ($key == 'empty') {
-      return !$this->_container;
-    }
-  }
-
-  public function push($item) {
-    $this->_container[] = $item;
-  }
-
-  public function pop() {
-    return array_pop($this->_container);
-  }
-
-  public function __toString() {
-    return implode(', ', $this->_container);
-  }
-}
-
-class Node {
-  private $state = NULL;
-  private $parent = NULL;
-  private $cost = 0.0;
-  private $heuristic = 0.0;
-
-  public function __construct($state, $parent = NULL, $cost = 0.0, $heuristic = 0.0) {
-    $this->state = $state;
-    $this->parent = $parent;
-    $this->cost = $cost;
-    $this->heuristic = $heuristic;
-  }
-
-  public function compare(Node $other): bool {
-    if ($this->cost + $this->heuristic < $other->cost + $other->heuristic) {
-      return -1;
-    }
-    if ($this->cost + $this->heuristic > $other->cost + $other->heuristic) {
-      return 1;
-    }
-    return 0;
-  }
-
-  public function __get($property) {
-    switch ($property) {
-    case 'state':
-      return $this->state;
-    case 'parent':
-      return $this->parent;
-    case 'cost':
-      return $this->cost;
-    case 'heuristic':
-      return $this->heuristic;
-    }
-  }
-}
-
+/**
+* Depth-first search
+*
+* @param mixed $initial Starting state
+* @param callable $goalTest Function to check whether we've reached the goal
+* @param callable $successors Function to find states to reach from current one
+* @return mixed Node if the goal has been reached, otherwise NULL
+*/
 function dfs($initial, $goalTest, $successors) {
+  // Frontier is where we've yet to go
   $frontier = new Stack();
   $frontier->push(new Node($initial, NULL));
+  // Explored is where we've been
   $explored = [$initial];
 
+  // Keep going while there is more to explore
   while (!$frontier->empty) {
     $currentNode = $frontier->pop();
     $currentState = $currentNode->state;
+    // If we found the goal, we're done
     if ($goalTest($currentState)) {
       return $currentNode;
     }
+    // Check where we can go next and haven't explored
     foreach ($successors($currentState) as $child) {
       if (in_array($child, $explored)) {
+        // Skip children we already explored
         continue;
       }
       $explored[] = $child;
       $frontier->push(new Node($child, $currentNode));
     }
   }
-  return NULL;
+  return NULL; // Went throug everything and never found goal
 }
 
-function nodeToPath($node): array {
+/**
+* Breadth-first search
+*
+* @param mixed $initial Starting state
+* @param callable $goalTest Function to check whether we've reached the goal
+* @param callable $successors Function to find states to reach from current one
+* @return mixed Node if the goal has been reached, otherwise NULL
+*/
+function bfs($initial, $goalTest, $successors) {
+  // Frontier is where we've yet to go
+  $frontier = new Queue();
+  $frontier->push(new Node($initial, NULL));
+  // Explored is where we've been
+  $explored = [$initial];
+
+  // Keep going while there is more to explore
+  while (!$frontier->empty) {
+    $currentNode = $frontier->pop();
+    $currentState = $currentNode->state;
+    // If we found the goal, we're done
+    if ($goalTest($currentState)) {
+      return $currentNode;
+    }
+    // Check where we can go next and haven't explored
+    foreach ($successors($currentState) as $child) {
+      if (in_array($child, $explored)) { 
+        // Skip children we already explored
+        continue;
+      }
+      $explored[] = $child;
+      $frontier->push(new Node($child, $currentNode));
+    }
+  }
+  return NULL; // Went through everything and never found goal
+}
+
+/**
+* A* search
+*
+* @param SearchState $initial Starting state
+* @param callable $goalTest Function to check whether we've reached the goal
+* @param callable $successors Function to find states to reach from current one
+* @param callable $heuristic Function to estimate the cost to reach a state
+* @return mixed Node if the goal has been reached, otherwise NULL
+*/
+function astar(SearchState $initial, $goalTest, $successors, $heuristic) {
+  // Frontier is where we've yet to go
+  $frontier = new PriorityQueue();
+  $frontier->push(new Node($initial, NULL, 0.0, $heuristic($initial)));
+  // Explored is where we've been
+  $explored = [$initial->getKey() => 0.0];
+
+  // Keep going while there's more to explore
+  while (!$frontier->empty) {
+    $currentNode = $frontier->pop();
+    $currentState = $currentNode->state;
+    // If we found the goal, we're done
+    if ($goalTest($currentState)) {
+      return $currentNode;
+    }
+    // Check where we can go next and haven't explored
+    foreach ($successors($currentState) as $child) {
+      // cost+1 assumes a grid, need a cost function for more sophisticated apps
+      $newCost = $currentNode->cost + 1;
+      $key = $child->getKey();
+      if (!isset($explored[$key]) || $explored[$key] > $newCost) {
+        $explored[$key] = $newCost;
+        $frontier->push(new Node($child, $currentNode, $newCost, $heuristic($child)));
+      }
+    }
+  }
+  return NULL; // Went through everything and never found goal
+}
+
+/**
+* Convert a node to a path by going through nodes' parents and reversing the result
+*
+* @param Node $node The node to convert to a path
+* @return array The path created from the node
+*/
+function nodeToPath(Node $node): array {
   $path = [$node->state];
   while (!is_null($node->parent)) {
     $node = $node->parent;
@@ -114,61 +163,3 @@ function nodeToPath($node): array {
   }
   return array_reverse($path);
 }
-
-class Queue extends Stack {
-  public function pop() {
-    return array_shift($this->_container);
-  }
-}
-
-function bfs($initial, $goalTest, $successors) {
-  $frontier = new Queue();
-  $frontier->push(new Node($initial, NULL));
-  $explored = [$initial];
-
-  while (!$frontier->empty) {
-    $currentNode = $frontier->pop();
-    $currentState = $currentNode->state;
-    if ($goalTest($currentState)) {
-      return $currentNode;
-    }
-    foreach ($successors($currentState) as $child) {
-      if (in_array($child, $explored)) {
-        continue;
-      }
-      $explored[] = $child;
-      $frontier->push(new Node($child, $currentNode));
-    }
-  }
-  return NULL;
-}
-
-class PriorityQueue extends Queue {
-  public function push($item) {
-    $this->_container[] = $item;
-    sort($this->_container);
-  }
-}
-
-function astar($initial, $goalTest, $successors, $heuristic) {
-  $frontier = new PriorityQueue();
-  $frontier->push(new Node($initial, NULL, 0.0, $heuristic($initial)));
-  $explored = [$initial];
-
-  while (!$frontier->empty) {
-    $currentNode = $frontier->pop();
-    $currentState = $currentNode->state;
-    if ($goalTest($currentState)) {
-      return $currentNode;
-    }
-    foreach ($successors($currentState) as $child) {
-      if (in_array($child, $explored)) {
-        continue;
-      }
-      $explored[] = $child;
-      $frontier->push(new Node($child, $currentNode));
-    }
-  }
-  return NULL;
-}
-
