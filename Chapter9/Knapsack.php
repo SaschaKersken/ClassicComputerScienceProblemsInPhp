@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/KnapsackItem.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Knapsack class

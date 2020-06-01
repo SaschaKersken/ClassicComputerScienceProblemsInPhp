@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 function fib5(int $n): int {
   if ($n == 0) {
@@ -15,5 +15,5 @@ function fib5(int $n): int {
   return $next;
 }
 
-Output::out(fib5(2));
-Output::out(fib5(50));
+Util::out(fib5(2));
+Util::out(fib5(50));

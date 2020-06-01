@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/GeneticAlgorithm.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class ListCompression extends Chromosome {
   const PEOPLE = ["Michael", "Sarah", "Joshua", "Narine", "David", "Sajid", "Melanie", "Daniel", "Wei", "Dean", "Brian", "Murat", "Lisa"];
@@ -61,4 +61,4 @@ for ($i = 0; $i < 100; $i++) {
 }
 $ga = new GeneticAlgorithm($initialPopulation, 1.0, 100, 0.2, 0.7, SelectionType::TOURNAMENT);
 $result = $ga->run();
-Output::out($result);
+Util::out($result);

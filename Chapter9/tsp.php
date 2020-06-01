@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Generate all possible permutations of an array
@@ -79,6 +79,6 @@ foreach ($tspPaths as $path) {
     $bestPath = $path;
   }
 }
-Output::out("The shortest path is:");
-Output::out($bestPath);
-Output::out("in $minDistance miles.");
+Util::out("The shortest path is:");
+Util::out($bestPath);
+Util::out("in $minDistance miles.");

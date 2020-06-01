@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/KMeans.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class Album extends DataPoint {
   private $name = '';
@@ -32,8 +32,8 @@ $albums = [
 $kmeans = new KMeans(2, $albums);
 $clusters = $kmeans->run();
 foreach ($clusters as $index => $cluster) {
-  Output::out(sprintf("Cluster %d Avg Length %f Avg Tracks %f", $index, $cluster->centroid->dimensions[0], $cluster->centroid->dimensions[1]));
+  Util::out(sprintf("Cluster %d Avg Length %f Avg Tracks %f", $index, $cluster->centroid->dimensions[0], $cluster->centroid->dimensions[1]));
   foreach ($cluster->points as $point) {
-    Output::out($point);
+    Util::out($point);
   }
 }

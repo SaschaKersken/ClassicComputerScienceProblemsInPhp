@@ -1,7 +1,6 @@
 <?php
 
-require_once(__DIR__.'/Cell.php');
-require_once(__DIR__.'/MazeLocation.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Maze class

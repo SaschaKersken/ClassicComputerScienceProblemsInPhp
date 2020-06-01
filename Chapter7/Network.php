@@ -29,7 +29,7 @@ abstract class Network {
 
   public function backPropagate(array $expected) {
     $lastLayer = count($this->layers) - 1;
-    $this->layers[$lastLayer]->calculateDeltasForOutputLayer($expected);
+    $this->layers[$lastLayer]->calculateDeltasForUtilLayer($expected);
     for ($l = $lastLayer - 1; $l > 0; $l--) {
       $this->layers[$l]->calculateDeltasForHiddenLayer($this->layers[$l + 1]);
     }
@@ -54,12 +54,12 @@ abstract class Network {
     }
   }
 
-  public function validate(array $inputs, array $expecteds, callable $interpretOutput): array {
+  public function validate(array $inputs, array $expecteds, callable $interpretUtil): array {
     $correct = 0;
     for ($i = 0; $i < count($inputs); $i++) {
       $input = $inputs[$i];
       $expected = $expecteds[$i];
-      $result = $interpretOutput($this->outputs($input));
+      $result = $interpretUtil($this->outputs($input));
       if ($result == $expected) {
         $correct++;
       }

@@ -1,29 +1,38 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
-
-class Stack {
-  private $_container = [];
-
-  public function push($item) {
-    $this->_container[] = $item;
-  }
-
-  public function pop() {
-    return array_pop($this->_container);
-  }
-
-  public function __toString() {
-    return implode(', ', $this->_container);
-  }
-}
-
+/**
+* Tower of Hanoi class
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class Hanoi {
+  /**
+  * Number of discs (hardcoded to 3 for this example)
+  * @var int
+  */
   private $numDiscs = 3;
+
+  /**
+  * First tower
+  * @var Stack
+  */
   private $towerA;
+
+  /**
+  * Second tower
+  * @var Stack
+  */
   private $towerB;
+
+  /**
+  * Third tower
+  * @var Stack
+  */
   private $towerC;
 
+  /**
+  * Constructor
+  */
   public function __construct() {
     $this->towerA = new Stack();
     $this->towerB = new Stack();
@@ -33,14 +42,14 @@ class Hanoi {
     }
   }
 
-  public function run() {
-    Output::out("Before:");
-    $this->printTowers();
-    $this->hanoi($this->towerA, $this->towerC, $this->towerB, $this->numDiscs);
-    Output::out("After:");
-    $this->printTowers();
-  }
-
+  /**
+  * Recursively solve the Towers
+  *
+  * @param Stack $begin Tower to take discs from
+  * @param Stack $end Tower to move discs to
+  * @param Stack $temp Temporary helper tower
+  * @param int $n Number of discs left to move
+  */
   public function hanoi(Stack $begin, Stack $end, Stack $temp, int $n) {
     if ($n == 1) {
       $end->push($begin->pop());
@@ -51,12 +60,23 @@ class Hanoi {
     }
   }
 
+  /**
+  * Pretty-print the towers
+  */
   private function printTowers() {
-    Output::out('A: '.$this->towerA);
-    Output::out('B: '.$this->towerB);
-    Output::out('C: '.$this->towerC);
+    Util::out('A: '.$this->towerA);
+    Util::out('B: '.$this->towerB);
+    Util::out('C: '.$this->towerC);
+  }
+
+  /**
+  * Run the algorithm
+  */
+  public function run() {
+    Util::out("Before:");
+    $this->printTowers();
+    $this->hanoi($this->towerA, $this->towerC, $this->towerB, $this->numDiscs);
+    Util::out("After:");
+    $this->printTowers();
   }
 }
-
-$hanoi = new Hanoi();
-$hanoi->run();

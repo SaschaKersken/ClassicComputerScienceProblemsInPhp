@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/mst.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $cityGraph2 = new WeightedGraph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
 $cityGraph2->addWeightedEdgeByVertices("Seattle", "Chicago", 1737);
@@ -33,7 +33,7 @@ $cityGraph2->addWeightedEdgeByVertices("Philadelphia", "Washington", 123);
 
 $result = mst($cityGraph2);
 if (is_null($result)) {
-  Output::out('No solution found!');
+  Util::out('No solution found!');
 } else {
   printWeightedPath($cityGraph2, $result);
 }

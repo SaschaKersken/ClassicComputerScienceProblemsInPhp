@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/KMeans.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class Governor extends DataPoint {
   private $longitude = 0.0;
@@ -55,8 +55,8 @@ new Governor(-71.51178, 46, "Rhode Island"), new Governor(-80.945007, 70, "South
 $kmeans = new KMeans(2, $governors);
 $govClusters = $kmeans->run();
 foreach ($govClusters as $index => $cluster) {
-  Output::out("Cluster $index:");
+  Util::out("Cluster $index:");
   foreach ($cluster->points as $point) {
-    Output::out($point);
+    Util::out($point);
   }
 }

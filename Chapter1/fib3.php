@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $memo = [0 => 0, 1 => 1]; // our base cases
 
@@ -12,5 +12,5 @@ function fib3(int $n): int {
   return $memo[$n];
 }
 
-Output::out(fib3(5));
-Output::out(fib3(50));
+Util::out(fib3(5));
+Util::out(fib3(50));

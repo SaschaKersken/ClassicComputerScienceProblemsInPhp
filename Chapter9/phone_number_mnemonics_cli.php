@@ -1,16 +1,16 @@
 <?php
 
 require_once(__DIR__.'/phone_number_mnemonics_lib.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
-Output::out("Enter a phone number: ", TRUE);
+Util::out("Enter a phone number: ", TRUE);
 $phoneNumber = readline();
 $possibleMnemonics = possibleMnemonics($phoneNumber);
 if (count($possibleMnemonics)) {
-  Output::out("Here are the potential mnemonics:");
+  Util::out("Here are the potential mnemonics:");
   foreach ($possibleMnemonics as $mnemonic) {
-    Output::out(implode('', $mnemonic));
+    Util::out(implode('', $mnemonic));
   }
 } else {
-  Output::out('Not a valid phone number');
+  Util::out('Not a valid phone number');
 }

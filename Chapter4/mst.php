@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/WeightedGraph.php');
 require_once(__DIR__.'/../Chapter2/generic_search.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 function totalWeight(array $wp): float {
   return array_sum(
@@ -48,7 +48,7 @@ function mst(WeightedGraph $wg, int $start = 0) {
 
 function printWeightedPath(WeightedGraph $wg, array $wp) {
   foreach ($wp as $edge) {
-    Output::out(sprintf('%s %d> %s', $wg->vertexAt($edge->u), $edge->weight, $wg->vertexAt($edge->v)));
+    Util::out(sprintf('%s %d> %s', $wg->vertexAt($edge->u), $edge->weight, $wg->vertexAt($edge->v)));
   }
-  Output::out(sprintf('Total weight: %d', totalWeight($wp)));
+  Util::out(sprintf('Total weight: %d', totalWeight($wp)));
 }

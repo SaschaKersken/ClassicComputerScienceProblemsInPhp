@@ -1,7 +1,6 @@
 <?php
 
-require_once(__DIR__.'/Codon.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Create a gene out of a string of nucleotides
@@ -65,10 +64,10 @@ $geneStr = "ACGTGGCTCTCTAACGTACGTACGTACGGGGTTTATATATACCCTAGGACTCCCTTT";
 $myGene = stringToGene($geneStr);
 $acg = new Codon('A', 'C', 'G');
 $gat = new Codon('G', 'A', 'T');
-Output::out('Linear contains:');
-Output::out('ACG: '.(linearContains($myGene, $acg) ? 'yes' : 'no')); // yes
-Output::out('GAT: '.(linearcontains($myGene, $gat) ? 'yes' : 'no')); // no
+Util::out('Linear contains:');
+Util::out('ACG: '.(linearContains($myGene, $acg) ? 'yes' : 'no')); // yes
+Util::out('GAT: '.(linearcontains($myGene, $gat) ? 'yes' : 'no')); // no
 sort($myGene);
-Output::out('Binary contains:');
-Output::out('ACG: '.(binaryContains($myGene, $acg) ? 'yes' : 'no')); // yes
-Output::out('GAT: '.(binaryContains($myGene, $gat) ? 'yes' : 'no')); // no
+Util::out('Binary contains:');
+Util::out('ACG: '.(binaryContains($myGene, $acg) ? 'yes' : 'no')); // yes
+Util::out('GAT: '.(binaryContains($myGene, $gat) ? 'yes' : 'no')); // no

@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/GeneticAlgorithm.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class SimpleEquation extends Chromosome {
   private $x = 0;
@@ -54,4 +54,4 @@ for ($i = 0; $i < 20; $i++) {
 }
 $ga = new GeneticAlgorithm($initialPopulation, 13.0, 100, 0.1, 0.7);
 $result = $ga->run();
-Output::out($result);
+Util::out($result);

@@ -1,10 +1,7 @@
 <?php
 
-require_once(__DIR__.'/SearchState.php');
-require_once(__DIR__.'/Maze.php');
-require_once(__DIR__.'/MazeLocation.php');
 require_once(__DIR__.'/generic_search.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Generate a function to calculate the euclidian distance to a goal
@@ -35,46 +32,46 @@ function manhattanDistance(MazeLocation $goal) {
 }
 
 $m = new Maze();
-Output::out($m);
-Output::out('Depth-first search:');
+Util::out($m);
+Util::out('Depth-first search:');
 $solution1 = dfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
 if (is_null($solution1)) {
-  Output::out('Found no solution using DFS');
+  Util::out('Found no solution using DFS');
 } else {
   $path1 = nodeToPath($solution1);
   $m->mark($path1);
-  Output::out($m);
+  Util::out($m);
   $m->clear($path1);
 }
-Output::out('Breadth-first search:');
+Util::out('Breadth-first search:');
 $solution2 = bfs($m->getStart(), [$m, 'goalTest'], [$m, 'successors']);
 if (is_null($solution2)) {
-  Output::out('Found no solution using BFS.');
+  Util::out('Found no solution using BFS.');
 } else {
   $path2 = nodeToPath($solution2);
   $m->mark($path2);
-  Output::out($m);
+  Util::out($m);
   $m->clear($path2);
 }
-Output::out('A* with euclidian distance');
+Util::out('A* with euclidian distance');
 $distance = euclidianDistance($m->getGoal());
 $solution3 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
 if (is_null($solution3)) {
-  Output::out('Found no solution using A* with euclidian distance');
+  Util::out('Found no solution using A* with euclidian distance');
 } else {
   $path3 = nodeToPath($solution3);
   $m->mark($path3);
-  Output::out($m);
+  Util::out($m);
   $m->clear($path3);
 }
-Output::out('A* with Manhattan distance');
+Util::out('A* with Manhattan distance');
 $distance = manhattanDistance($m->getGoal());
 $solution4 = astar($m->getStart(), [$m, 'goalTest'], [$m, 'successors'], $distance);
 if (is_null($solution4)) {
-  Output::out('Found no solution using A* with Manhattan distance');
+  Util::out('Found no solution using A* with Manhattan distance');
 } else {
   $path4 = nodeToPath($solution4);
   $m->mark($path4);
-  Output::out($m);
+  Util::out($m);
   $m->clear($path4);
 }

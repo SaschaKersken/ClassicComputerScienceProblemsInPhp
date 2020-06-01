@@ -1,10 +1,6 @@
 <?php
 
-require_once(__DIR__.'/SearchState.php');
-require_once(__DIR__.'/Node.php');
-require_once(__DIR__.'/Stack.php');
-require_once(__DIR__.'/Queue.php');
-require_once(__DIR__.'/PriorityQueue.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Generic search library

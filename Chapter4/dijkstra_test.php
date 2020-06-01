@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/dijkstra.php');
 require_once(__DIR__.'/mst.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $cityGraph2 = new WeightedGraph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
 $cityGraph2->addWeightedEdgeByVertices("Seattle", "Chicago", 1737);
@@ -34,11 +34,11 @@ $cityGraph2->addWeightedEdgeByVertices("Philadelphia", "Washington", 123);
 
 list($distances, $paths) = dijkstra($cityGraph2, 'Los Angeles');
 $nameDistance = distanceArrayToVertices($cityGraph2, $distances);
-Output::out('Distances from Los Angeles:');
+Util::out('Distances from Los Angeles:');
 foreach ($nameDistance as $key => $value) {
-  Output::out(sprintf('%s: %d', $key, $value));
+  Util::out(sprintf('%s: %d', $key, $value));
 }
-Output::out('');
-Output::out('Shortest path from Los Angeles to Boston:');
+Util::out('');
+Util::out('Shortest path from Los Angeles to Boston:');
 $path = pathArrayToPath($cityGraph2->indexOf('Los Angeles'), $cityGraph2->indexOf('Boston'), $paths);
 printWeightedPath($cityGraph2, $path);

@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 function randomKey(int $length): string {
   // Generate $length random bytes and return them
@@ -26,4 +26,4 @@ function decrypt(string $key1, string $key2): string {
 
 list($key1, $key2) = encrypt('One Time Pad!');
 $result = decrypt($key1, $key2);
-Output::out($result);
+Util::out($result);

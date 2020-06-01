@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/GeneticAlgorithm.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class SendMoreMoney2 extends Chromosome {
   public $letters = [];
@@ -77,4 +77,4 @@ for ($i = 0; $i < 1000; $i++) {
 }
 $ga = new GeneticAlgorithm($initialPopulation, 1.0, 1000, 0.2, 0.7, SelectionType::ROULETTE);
 $result = $ga->run();
-Output::out($result);
+Util::out($result);

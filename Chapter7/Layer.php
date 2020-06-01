@@ -43,7 +43,7 @@ private $counter = 0;
     return $this->outputCache;
   }
 
-  public function calculateDeltasForOutputLayer(array $expected) {
+  public function calculateDeltasForUtilLayer(array $expected) {
     for ($n = 0; $n < count($this->neurons); $n++) {
       $this->neurons[$n]->delta = $this->derivativeActivationFunction(
         $this->neurons[$n]->outputCache

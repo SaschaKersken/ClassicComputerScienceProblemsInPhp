@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 function fib6(int $n) {
   yield 0; // Special case
@@ -17,5 +17,5 @@ function fib6(int $n) {
 }
 
 foreach(fib6(50) as $i) {
-   Output::out($i);
+   Util::out($i);
 }

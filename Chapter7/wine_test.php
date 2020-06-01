@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/NetworkUtils.php');
 require_once(__DIR__.'/SigmoidNetwork.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $wineParameters = [];
 $wineClassifications = [];
@@ -33,7 +33,7 @@ $wineParameters = NetworkUtils::normalizeByFeatureScaling($wineParameters);
 
 $wineNetwork = new SigmoidNetwork([13, 7, 3], 0.9);
 
-function wineInterpretOutput(array $output): string {
+function wineInterpretUtil(array $output): string {
   if (max($output) == $output[0]) {
     return 1;
   } elseif (max($output) == $output[1]) {
@@ -54,9 +54,9 @@ $wineTestersCorrects = array_slice($wineSpecies, 150);
 $wineResults = $wineNetwork->validate(
   $wineTesters,
   $wineTestersCorrects,
-  'wineInterpretOutput'
+  'wineInterpretUtil'
 );
-Output::out(
+Util::out(
   sprintf(
     "%d correct of %d = %.2f%%",
     $wineResults[0],

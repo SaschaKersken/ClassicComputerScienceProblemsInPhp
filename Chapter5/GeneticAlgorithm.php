@@ -121,7 +121,7 @@ class GeneticAlgorithm {
       if ($best->fitness() >= $this->_threshold) {
         return $best;
       }
-      Output::out(sprintf("Generation: %d, Best: %f, Average: %f", $i, $best->fitness(), $avg));
+      Util::out(sprintf("Generation: %d, Best: %f, Average: %f", $i, $best->fitness(), $avg));
       $this->reproduceAndReplace();
       $this->mutate();
       list($highest, $avg) = $this->_bestAndAvgByFitness();

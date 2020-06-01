@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/DataPoint.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class Cluster {
   public $points = [];
@@ -160,7 +160,7 @@ class KMeans {
       );
       $this->_generateCentroids();
       if ($oldCentroids == $this->centroids) {
-        Output::out("Converged after $iteration iterations");
+        Util::out("Converged after $iteration iterations");
         return $this->_clusters;
       }
     }

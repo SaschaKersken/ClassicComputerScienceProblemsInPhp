@@ -43,7 +43,7 @@ class NetworkUtils {
       for ($rowNum = 0; $rowNum < count($dataset); $rowNum++) {
         //printf("- Input value: %f\n", $dataset[$rowNum][$colNum]);
         $result[$rowNum][$colNum] = ($dataset[$rowNum][$colNum] - $minimum) / ($maximum - $minimum);
-        //printf("* Output value: %f\n", $result[$rowNum][$colNum]);
+        //printf("* Util value: %f\n", $result[$rowNum][$colNum]);
       }
     }
     return $result;

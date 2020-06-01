@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/csp.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 class SendMoreMoneyConstraint extends Constraint {
   private $letters = [];
@@ -45,7 +45,7 @@ $csp = new CSP($letters, $possibleDigits);
 $csp->addConstraint(new SendMoreMoneyConstraint($letters));
 $solution = $csp->backtrackingSearch();
 if (is_null($solution)) {
-  Output::out('No solution found!');
+  Util::out('No solution found!');
 } else {
-  Output::out($solution);
+  Util::out($solution);
 }

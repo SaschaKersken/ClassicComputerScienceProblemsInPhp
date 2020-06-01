@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/Graph.php');
 require_once(__DIR__.'/../Chapter2/generic_search.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $cityGraph = new Graph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
 $cityGraph->addEdgeByVertices("Seattle", "Chicago");
@@ -31,7 +31,7 @@ $cityGraph->addEdgeByVertices("Detroit", "New York");
 $cityGraph->addEdgeByVertices("Boston", "New York");
 $cityGraph->addEdgeByVertices("New York", "Philadelphia");
 $cityGraph->addEdgeByVertices("Philadelphia", "Washington");
-Output::out($cityGraph);
+Util::out($cityGraph);
 $bfsResult = bfs(
   'Boston',
   function($x) {
@@ -40,9 +40,9 @@ $bfsResult = bfs(
   [$cityGraph, 'neighborsForVertex']
 );
 if (is_null($bfsResult)) {
-  Output::out('No solution found using breadth-first search!');
+  Util::out('No solution found using breadth-first search!');
 } else {
   $path = nodeToPath($bfsResult);
-  Output::out('Path from Boston to Miami:');
-  Output::out($path);
+  Util::out('Path from Boston to Miami:');
+  Util::out($path);
 }

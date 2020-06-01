@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/WeightedGraph.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $cityGraph2 = new WeightedGraph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
 $cityGraph2->addWeightedEdgeByVertices("Seattle", "Chicago", 1737);
@@ -30,5 +30,5 @@ $cityGraph2->addWeightedEdgeByVertices("Detroit", "New York", 482);
 $cityGraph2->addWeightedEdgeByVertices("Boston", "New York", 190);
 $cityGraph2->addWeightedEdgeByVertices("New York", "Philadelphia", 81);
 $cityGraph2->addWeightedEdgeByVertices("Philadelphia", "Washington", 123);
-Output::out($cityGraph2);
+Util::out($cityGraph2);
 

@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/NetworkUtils.php');
 require_once(__DIR__.'/SigmoidNetwork.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $irisParameters = [];
 $irisClassifications = [];
@@ -33,7 +33,7 @@ $irisParameters = NetworkUtils::normalizeByFeatureScaling($irisParameters);
 
 $irisNetwork = new SigmoidNetwork([4, 6, 3], 0.3);
 
-function irisInterpretOutput(array $output): string {
+function irisInterpretUtil(array $output): string {
   if (max($output) == $output[0]) {
     return 'Iris-setosa';
   } elseif (max($output) == $output[1]) {
@@ -54,9 +54,9 @@ $irisTestersCorrects = array_slice($irisSpecies, 140);
 $irisResults = $irisNetwork->validate(
   $irisTesters,
   $irisTestersCorrects,
-  'irisInterpretOutput'
+  'irisInterpretUtil'
 );
-Output::out(
+Util::out(
   sprintf(
     "%d correct of %d = %.2f%%",
     $irisResults[0],

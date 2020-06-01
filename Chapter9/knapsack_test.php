@@ -1,7 +1,6 @@
 <?php
 
-require_once(__DIR__.'/Knapsack.php');
-require_once(__DIR__.'/../Output.php');
+require_once(__DIR__.'/../Util.php');
 
 $items = [
   new KnapsackItem("television", 50, 500),
@@ -19,7 +18,7 @@ $items = [
 $knapsack = new Knapsack($items);
 $result = $knapsack->run(75);
 foreach ($result as $item) {
-  Output::out(
+  Util::out(
     sprintf("%s (weight %d, value %d)", $item->name, $item->weight, $item->value)
   );
 }

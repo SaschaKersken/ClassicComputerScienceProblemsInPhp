@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/Nucleotide.php');
+require_once(__DIR__.'/../Util.php');
 
 /**
 * Representation of a codon
