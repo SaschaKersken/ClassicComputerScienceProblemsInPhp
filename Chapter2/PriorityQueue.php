@@ -24,7 +24,7 @@ class PriorityQueue extends Queue {
   */
   public function push($item) {
     if (!$this->isNode($item)) {
-      $onlyNodes = FALSE;
+      $this->onlyNodes = FALSE;
     }
     $this->_container[] = $item;
     if ($this->onlyNodes) {
