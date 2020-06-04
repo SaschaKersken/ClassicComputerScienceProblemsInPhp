@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__.'/NetworkUtils.php');
-require_once(__DIR__.'/SigmoidNetwork.php');
 require_once(__DIR__.'/../Util.php');
 
 $irisParameters = [];
@@ -12,7 +10,7 @@ $irisFile = fopen(__DIR__.'/iris.csv', 'r');
 while ($iris = fgetcsv($irisFile)) {
   $irises[] = $iris;
 }
-shuffle($irises);
+shuffle($irises); // get our lines of data in random order
 foreach ($irises as $iris) {
   $parameters = array_slice($iris, 0, 4);
   $irisParameters[] = $parameters;
@@ -33,7 +31,7 @@ $irisParameters = NetworkUtils::normalizeByFeatureScaling($irisParameters);
 
 $irisNetwork = new SigmoidNetwork([4, 6, 3], 0.3);
 
-function irisInterpretUtil(array $output): string {
+function irisInterpretOutput(array $output): string {
   if (max($output) == $output[0]) {
     return 'Iris-setosa';
   } elseif (max($output) == $output[1]) {
@@ -43,18 +41,20 @@ function irisInterpretUtil(array $output): string {
   }
 }
 
+// Train over the first 140 irises in the data set 50 times
 $irisTrainers = array_slice($irisParameters, 0, 140);
 $irisTrainersCorrects = array_slice($irisClassifications, 0, 140);
 for ($i = 0; $i < 50; $i++) {
   $irisNetwork->train($irisTrainers, $irisTrainersCorrects);
 }
 
+// Test over the last 10 of the irises in the data set
 $irisTesters = array_slice($irisParameters, 140);
 $irisTestersCorrects = array_slice($irisSpecies, 140);
 $irisResults = $irisNetwork->validate(
   $irisTesters,
   $irisTestersCorrects,
-  'irisInterpretUtil'
+  'irisInterpretOutput'
 );
 Util::out(
   sprintf(

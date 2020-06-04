@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__.'/NetworkUtils.php');
-require_once(__DIR__.'/SigmoidNetwork.php');
 require_once(__DIR__.'/../Util.php');
 
 $wineParameters = [];
@@ -12,7 +10,7 @@ $wineFile = fopen(__DIR__.'/wine.csv', 'r');
 while ($wine = fgetcsv($wineFile)) {
   $wines[] = $wine;
 }
-shuffle($wines);
+shuffle($wines); // get our lines of data in random order
 foreach ($wines as $wine) {
   $parameters = array_slice($wine, 1, 13);
   $wineParameters[] = $parameters;
@@ -43,12 +41,14 @@ function wineInterpretUtil(array $output): string {
   }
 }
 
+// Train over the first 150 wines 10 times
 $wineTrainers = array_slice($wineParameters, 0, 150);
 $wineTrainersCorrects = array_slice($wineClassifications, 0, 150);
 for ($i = 0; $i < 10; $i++) {
   $wineNetwork->train($wineTrainers, $wineTrainersCorrects);
 }
 
+// Test over the last 28 of the wines in the data set
 $wineTesters = array_slice($wineParameters, 150);
 $wineTestersCorrects = array_slice($wineSpecies, 150);
 $wineResults = $wineNetwork->validate(

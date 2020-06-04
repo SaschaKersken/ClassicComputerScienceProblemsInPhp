@@ -75,6 +75,13 @@ abstract class Layer {
     return $this->outputCache;
   }
 
+  /**
+  * Calculate deltas for output layer
+  *
+  * Should only be called on output layer
+  *
+  * @param array $expected Expected values
+  */
   public function calculateDeltasForOutputLayer(array $expected) {
     for ($n = 0; $n < count($this->neurons); $n++) {
       $this->neurons[$n]->delta = $this->derivativeActivationFunction(
@@ -83,6 +90,13 @@ abstract class Layer {
     }
   }
 
+  /**
+  * Calculate deltas for hidden layer
+  *
+  * Should not be called on output layer
+  *
+  * @param Layer $nextLayer Next layer to retrieve deltas from
+  */
   public function calculateDeltasForHiddenLayer(Layer $nextLayer) {
     foreach ($this->neurons as $index => $neuron) {
       $nextWeights = array_map(
