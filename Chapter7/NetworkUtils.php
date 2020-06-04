@@ -1,5 +1,12 @@
 <?php
 
+/**
+* NetworkUtils class
+*
+* Helper class that holds some static methods for neural networks
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class NetworkUtils {
   /**
    * Sigmoid function
@@ -29,6 +36,14 @@ class NetworkUtils {
     return NetworkUtils::sigmoid($x) * (1 - NetworkUtils::sigmoid($x));
   }
 
+  /**
+  * Feature-scale a set of values
+  *
+  * Make sure that all values come close to -1 < value < 1
+  *
+  * @param array $dataset Data set to feature-scale
+  * @return array Feature-scaled values
+  */
   public static function normalizeByFeatureScaling(array $dataset): array {
     $result = [];
     for ($colNum = 0; $colNum < count($dataset[0]); $colNum++) {
@@ -41,9 +56,8 @@ class NetworkUtils {
       $maximum = max($column);
       $minimum = min($column);
       for ($rowNum = 0; $rowNum < count($dataset); $rowNum++) {
-        //printf("- Input value: %f\n", $dataset[$rowNum][$colNum]);
-        $result[$rowNum][$colNum] = ($dataset[$rowNum][$colNum] - $minimum) / ($maximum - $minimum);
-        //printf("* Util value: %f\n", $result[$rowNum][$colNum]);
+        $result[$rowNum][$colNum] =
+          ($dataset[$rowNum][$colNum] - $minimum) / ($maximum - $minimum);
       }
     }
     return $result;

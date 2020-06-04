@@ -1,14 +1,40 @@
 <?php
 
-require_once(__DIR__.'/NetworkUtils.php');
-require_once(__DIR__.'/Neuron.php');
+require_once(__DIR__.'/../Util.php');
 
+/**
+* Layer class
+*
+* Represents a layer in an artificial neural network
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 abstract class Layer {
+  /**
+  * Previous layer (input for this one)
+  * @var mixed NULL if this is the input layer, otherwise Layer
+  */
   public $previousLayer = NULL;
-  public $neurons = [];
-  public $outputCache = [];
-private $counter = 0;
 
+  /**
+  * This layer's neurons
+  * @var array
+  */
+  public $neurons = [];
+
+  /**
+  * This layer's output cache
+  * @var array
+  */
+  public $outputCache = [];
+
+  /**
+  * Constructor
+  *
+  * @param mixed $previousLayer The previous Layer or NULL if input layer
+  * @param int $numNeurons How many neurons to create for this layer
+  * @param float $learningRate The learning rate
+  */
   public function __construct($previousLayer, int $numNeurons, float $learningRate) {
     $this->previousLayer = $previousLayer;
     $this->neurons = [];
@@ -29,6 +55,12 @@ private $counter = 0;
     $this->outputCache = array_fill(0, $numNeurons - 1, 0.0);
   }
 
+  /**
+  * Calculate outputs using the layer's neurons
+  *
+  * @param array $inputs Input values (from previous layer, or user if input layer)
+  * @return array Values after calculation
+  */
   public function outputs(array $inputs): array {
     if (is_null($this->previousLayer)) {
       $this->outputCache = $inputs;
@@ -43,7 +75,7 @@ private $counter = 0;
     return $this->outputCache;
   }
 
-  public function calculateDeltasForUtilLayer(array $expected) {
+  public function calculateDeltasForOutputLayer(array $expected) {
     for ($n = 0; $n < count($this->neurons); $n++) {
       $this->neurons[$n]->delta = $this->derivativeActivationFunction(
         $this->neurons[$n]->outputCache
@@ -72,7 +104,24 @@ private $counter = 0;
     }
   }
 
-  public abstract function createNeuron(array $weights, float $learningRate);
+  /**
+  * Create a neuron
+  *
+  * Has to be overridden by child classes to determine the type of neuron
+  *
+  * @param array $weights Initial weights for the neuron
+  * @param float $learningRate The learning rate
+  * @return Neuron The new neuron (instance of a Neuron child class)
+  */
+  public abstract function createNeuron(array $weights, float $learningRate): Neuron;
 
+  /**
+  * Derivation of the activation function to adjust the weights
+  *
+  * Has to be overridden by child classes to choose a specific function
+  *
+  * @param float $x Value to apply the derivative activation function to
+  * @return float Result of this calculation
+  */
   public abstract function derivativeActivationFunction(float $x): float;
 }

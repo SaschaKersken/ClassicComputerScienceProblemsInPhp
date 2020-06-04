@@ -1,9 +1,21 @@
 <?php
 
+/**
+* Utility class to be used throughout the examples
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class Util {
+  /**
+  * Are we using CLI? NULL until we know, then TRUE or FALSE
+  * @var boolean
+  */
   static $cli = NULL;
 
-  static function init() {
+  /**
+  * Initialize: check whether we're using CLI, and if so, prepend <pre>
+  */
+  private static function init() {
     if (is_null(self::$cli)) {
       self::$cli = (php_sapi_name() === 'cli');
       if (self::$cli === FALSE) {
@@ -12,7 +24,13 @@ class Util {
     }
   }
 
-  static function autoload($className) {
+  /**
+  * Autoloader method for all classes in the examples
+  *
+  * @param string $className The class to load
+  * @throws UnexpectedValueException if a class does not exist
+  */
+  public static function autoload($className) {
     if (!class_exists($className)) {
       $iterator = new RecursiveDirectoryIterator(__DIR__);
       foreach (new RecursiveIteratorIterator($iterator) as $entry) {
@@ -25,7 +43,13 @@ class Util {
     }
   }
 
-  static function out($text, $suppressEol = FALSE) {
+  /**
+  * Output data
+  *
+  * @param mixed $text The data to print
+  * @param bool $suppressEol If TRUE, omit line break; optional, default FALSE
+  */
+  public static function out($text, $suppressEol = FALSE) {
     self::init();
     if (is_string($text)) {
       echo $text.($suppressEol ? '' : PHP_EOL);
@@ -38,4 +62,5 @@ class Util {
   }
 }
 
+// Register the autoloader method
 spl_autoload_register(['Util', 'autoload']);

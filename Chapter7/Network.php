@@ -29,7 +29,7 @@ abstract class Network {
 
   public function backPropagate(array $expected) {
     $lastLayer = count($this->layers) - 1;
-    $this->layers[$lastLayer]->calculateDeltasForUtilLayer($expected);
+    $this->layers[$lastLayer]->calculateDeltasForOutputLayer($expected);
     for ($l = $lastLayer - 1; $l > 0; $l--) {
       $this->layers[$l]->calculateDeltasForHiddenLayer($this->layers[$l + 1]);
     }
