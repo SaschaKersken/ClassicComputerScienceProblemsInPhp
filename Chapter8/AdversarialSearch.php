@@ -1,15 +1,35 @@
 <?php
 
-require_once(__DIR__.'/Board.php');
-require_once(__DIR__.'/Piece.php');
+require_once(__DIR__.'/../Util.php');
 
+/**
+* AdversarialSearch class
+*
+* The minimax and alpha-beta pruning algorithms for adversarial search
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class AdversarialSearch {
-  public static function minimax(Board $board, bool $maximizing, Piece $originalPlayer, int $maxDepth = 8): float {
+  /**
+  * Minimax algorithm
+  *
+  * Find the best possible outcome for original player
+  *
+  * @param Board $board The board with possible moves and current position
+  * @param bool $maximizing Are we maximizing (TRUE) or minimizing (FALSE)?
+  * @param Piece $originalPlayer Player whose turn it is
+  * @param int $maxDepth Search depth optional, default 8
+  * @return float Best move evaluation
+  */
+  public static function minimax(Board $board, bool $maximizing,
+      Piece $originalPlayer, int $maxDepth = 8): float {
+    // Base case – terminal position or maximum depth reached
     if ($board->isWin() || $board->isDraw() || $maxDepth == 0) {
       return $board->evaluate($originalPlayer);
     }
+    // Recursive case - maximize your gains or minimize the opponent's gains
     if ($maximizing) {
-      $bestEval = -INF;
+      $bestEval = -INF; // arbitrarily low starting point
       foreach ($board->legalMoves() as $move) {
         $result = self::minimax(
           $board->move($move),
@@ -17,6 +37,7 @@ class AdversarialSearch {
           $originalPlayer,
           $maxDepth - 1
         );
+        // We want the move with the highest evaluation
         $bestEval = max($result, $bestEval);
       }
       return $bestEval;
@@ -31,14 +52,30 @@ class AdversarialSearch {
         );
         $worstEval = min($result, $worstEval);
       }
+      // We want the move with the lowest evaluation
       return $worstEval;
     }
   }
 
-  public static function alphabeta(Board $board, bool $maximizing, Piece $originalPlayer, int $maxDepth = 8, float $alpha = -INF, float $beta = INF): float {
+  /**
+  * Alpha-beta pruning (optimized minimax)
+  *
+  * @param Board $board The board with possible moves and current position
+  * @param bool $maximizing Are we maximizing (TRUE) or minimizing (FALSE)?
+  * @param Piece $originalPlayer Player whose turn it is
+  * @param int $maxDepth Search depth optional, default 8
+  * @param float $alpha Best evaluation so far optional, default -INF
+  * @param float $beta Worst evaluation so far optional, default INF
+  * @return float Best move evaluation
+  */
+  public static function alphabeta(Board $board, bool $maximizing,
+      Piece $originalPlayer, int $maxDepth = 8, float $alpha = -INF,
+      float $beta = INF): float {
+    // Base case – terminal position or maximum depth reached
     if ($board->isWin() || $board->isDraw() || $maxDepth == 0) {
       return $board->evaluate($originalPlayer);
     }
+    // Recursive case - maximize your gains or minimize the opponent's gains
     if ($maximizing) {
       foreach ($board->legalMoves() as $move) {
         $result = self::alphabeta(
@@ -74,11 +111,25 @@ class AdversarialSearch {
     }
   }
 
+  /**
+  * Find the best possible move in the current position
+  *
+  * Looking up to $maxDepth ahead
+  *
+  * @param Board $board The board with possible moves and current position
+  * @param int $maxDepth Search depth optional, default 8
+  * @return int The best move found during the process
+  */
   public static function findBestMove(Board $board, int $maxDepth = 8): int {
     $bestEval = -INF;
     $bestMove = -1;
     foreach ($board->legalMoves() as $move) {
-      $result = self::alphabeta($board->move($move), FALSE, $board->turn(), $maxDepth);
+      $result = self::alphabeta(
+        $board->move($move),
+        FALSE,
+        $board->turn(),
+        $maxDepth
+      );
       if ($result > $bestEval) {
         $bestEval = $result;
         $bestMove = $move;

@@ -1,9 +1,14 @@
 <?php
 
-require_once(__DIR__.'/Board.php');
-require_once(__DIR__.'/C4Piece.php');
-require_once(__DIR__.'/C4Column.php');
+require_once(__DIR__.'/../Util.php');
 
+/**
+* C4Board class
+*
+* Represents the board in Connect Four
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class C4Board implements Board {
   const NUM_ROWS = 6;
   const NUM_COLUMNS = 7;
