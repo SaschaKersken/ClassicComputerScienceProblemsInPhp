@@ -45,8 +45,6 @@ class Maze {
   * @var array
   */
   private $_grid = [];
-  //public $goalTest = NULL;
-  //public $successors = NULL;
 
   /**
   * Constructor
