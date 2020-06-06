@@ -67,7 +67,7 @@ class MCState {
   */
   public function __toString(): string {
     $output = sprintf("There are %d missionaries and %d cannibals on the west bank.\n", $this->wm, $this->wc);
-    $output .= sprintf("There are %d missionaires and %d cannibals on the east bank.\n", $this->em, $this->ec);
+    $output .= sprintf("There are %d missionaries and %d cannibals on the east bank.\n", $this->em, $this->ec);
     $output .= sprintf("The boat is on the %s bank.", $this->boat ? "west" : "east");
     return $output;
   }
