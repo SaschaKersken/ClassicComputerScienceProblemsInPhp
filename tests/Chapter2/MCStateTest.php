@@ -67,4 +67,29 @@ The boat is on the west bank.";
     $mc = new MCState(0, 0, FALSE);
     $this->assertTrue(MCState::goalTest($mc));
   }
+
+  /**
+  * @covers MCState::successors
+  * @dataProvider successorsProvider
+  */
+  public function testSuccessors($wm, $wc, $boat, $expected) {
+    $mc = new MCState($wm, $wc, $boat);
+    $this->assertEquals($expected, MCState::successors($mc));
+  }
+
+  public function successorsProvider() {
+    return [
+      [3, 3, TRUE, [
+        2 => new MCState(3, 1, FALSE),
+        3 => new MCState(3, 2, FALSE),
+        4 => new MCState(2, 2, FALSE)
+      ]],
+      [0, 0, FALSE, [
+        2 => new MCState(0, 2, TRUE),
+        3 => new MCState(0, 1, TRUE),
+        4 => new MCState(1, 1, TRUE)
+      ]]
+    ];
+  }
+        
 }
