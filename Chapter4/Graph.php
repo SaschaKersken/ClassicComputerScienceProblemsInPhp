@@ -47,7 +47,13 @@ class Graph {
     case 'vertexCount':
       return count($this->_vertices);
     case 'edgeCount':
-      return array_sum(array_map('count', $this->_edges));
+      return array_reduce(
+        $this->_edges,
+        function ($sum, $edgesByVertex) {
+          $sum += count($edgesByVertex);
+          return $sum;
+        }
+      );
     }
   }
 
@@ -188,7 +194,10 @@ class Graph {
   public function __toString(): string {
     $desc = '';
     foreach ($this->_vertices as $vertex) {
-      $desc .= $vertex." -> ".implode(', ', $this->neighborsForVertex($vertex)).PHP_EOL;
+      $desc .= $vertex." -> ".implode(
+        ', ',
+        $this->neighborsForVertex($vertex)
+      ).PHP_EOL;
     }
     return $desc;
   }
