@@ -41,7 +41,8 @@ class MapColoringConstraint extends Constraint {
   public function satisfied(array $assignment): bool {
     // If either place is not in the assignment then it is not
     // yet possible for their colors to be conflicting
-    if (!array_key_exists($this->place1, $assignment) || !array_key_exists($this->place2, $assignment)) {
+    if (!array_key_exists($this->place1, $assignment) ||
+        !array_key_exists($this->place2, $assignment)) {
       return TRUE;
     }
     // Check the color assigned to place1 is not the same as the

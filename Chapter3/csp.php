@@ -87,6 +87,7 @@ class CSP {
   * Backtracking search
   *
   * @param array $assignment
+  * @return mixed The final assignment (array) or NULL if there is none
   */
   public function backtrackingSearch(array $assignment = []) {
     // assignment is complete if every variable is assigned (our base case)
@@ -109,7 +110,7 @@ class CSP {
       $localAssignment[$first] = $value;
       // if we're still consistent, we recurse (continue)
       if ($this->consistent($first, $localAssignment)) {
-        $result = $this->backTrackingSearch($localAssignment);
+        $result = $this->backtrackingSearch($localAssignment);
         // if we didn't find the result, we will end up backtracking
         if (!is_null($result)) {
           return $result;
