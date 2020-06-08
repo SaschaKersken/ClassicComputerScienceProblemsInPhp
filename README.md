@@ -1,4 +1,4 @@
-# Classic Computer Science Problems in Php
+# Classic Computer Science Problems in PHP
 PHP ports of the examples in David Kopec's book "Classic Computer Science Problems in Python"
 You can download the original Python examples from [David's repository](https://github.com/davecom/ClassicComputerScienceProblemsInPython).
 
