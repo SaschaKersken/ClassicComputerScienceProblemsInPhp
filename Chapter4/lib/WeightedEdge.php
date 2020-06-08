@@ -32,7 +32,7 @@ class WeightedEdge extends Edge {
   *
   * @return WeightedEdge A new weighted edge with $u and $v reversed
   */
-  public function reversed(): WeightedEdge {
+  public function reversed(): Edge {
     return new WeightedEdge($this->v, $this->u, $this->weight);
   }
 
