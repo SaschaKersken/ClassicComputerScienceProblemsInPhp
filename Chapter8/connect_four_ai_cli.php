@@ -1,7 +1,5 @@
 <?php
 
-require_once(__DIR__.'/C4Board.php');
-require_once(__DIR__.'/AdversarialSearch.php');
 require_once(__DIR__.'/../Util.php');
 
 function getPlayerMove(C4Board $board): int {

@@ -66,7 +66,7 @@ $acg = new Codon('A', 'C', 'G');
 $gat = new Codon('G', 'A', 'T');
 Util::out('Linear contains:');
 Util::out('ACG: '.(linearContains($myGene, $acg) ? 'yes' : 'no')); // yes
-Util::out('GAT: '.(linearcontains($myGene, $gat) ? 'yes' : 'no')); // no
+Util::out('GAT: '.(linearContains($myGene, $gat) ? 'yes' : 'no')); // no
 sort($myGene);
 Util::out('Binary contains:');
 Util::out('ACG: '.(binaryContains($myGene, $acg) ? 'yes' : 'no')); // yes

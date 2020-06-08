@@ -1,7 +1,6 @@
 <?php
 
-require_once(__DIR__.'/TTTBoard.php');
-require_once(__DIR__.'/AdversarialSearch.php');
+require_once(__DIR__.'/../Util.php');
 
 ?>
 <!DOCTYPE html>

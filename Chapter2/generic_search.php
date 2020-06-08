@@ -2,14 +2,6 @@
 
 require_once(__DIR__.'/../Util.php');
 
-/**
-* Generic search library
-*
-* Usage: require_once('[path/]generic_search.php');
-*/
-
-require_once(__DIR__.'/Stack.php');
-
 function linearContains($iterable, $key): bool {
   foreach ($iterable as $item) {
     if ($item == $key) {

@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__.'/KMeans.php');
 require_once(__DIR__.'/../Util.php');
 
 $point1 = new DataPoint([2.0, 1.0, 1.0]);

@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__.'/csp.php');
 require_once(__DIR__.'/../Util.php');
 
 class SendMoreMoneyConstraint extends Constraint {

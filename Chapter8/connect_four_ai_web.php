@@ -1,7 +1,6 @@
 <?php
 
-require_once(__DIR__.'/C4Board.php');
-require_once(__DIR__.'/AdversarialSearch.php');
+require_once(__DIR__.'/../Util.php');
 
 // Note: You may need to increase max_execution_time in php.ini significantly
 

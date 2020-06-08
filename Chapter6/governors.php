@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__.'/KMeans.php');
 require_once(__DIR__.'/../Util.php');
 
 class Governor extends DataPoint {
