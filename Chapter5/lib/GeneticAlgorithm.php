@@ -133,7 +133,7 @@ class GeneticAlgorithm {
   * Replace the population with a new generation of individuals
   */
   public function reproduceAndReplace() {
-    $newPopulation = array();
+    $newPopulation = [];
     // Keep going until we've filled the new generation
     while (count($newPopulation) < count($this->_population)) {
       // Pick the 2 parents
