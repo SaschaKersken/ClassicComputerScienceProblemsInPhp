@@ -89,9 +89,44 @@ final class GeneticAlgorithmTest extends TestCase {
       [SelectionType::TOURNAMENT, 0]
     ];
   }
+
+  /**
+  * @covers GeneticAlgorithm::mutate
+  */
+  public function testMutate() {
+    $chromosome = DummyChromosome::randomInstance();
+    $ga = new GeneticAlgorithm([$chromosome], 1, 1, 1);
+    $ga->mutate();
+    $this->assertTrue($chromosome->mutated);
+  }
+
+  /**
+  * @covers GeneticAlgorithm::run
+  * @dataProvider runProvider
+  */
+  public function testRun($threshold) {
+    $this->setOutputCallback(function() {});
+    $chromosomes = [
+      DummyChromosome::randomInstance(),
+      DummyChromosome::randomInstance(),
+      DummyChromosome::randomInstance(),
+      DummyChromosome::randomInstance()
+    ];
+    $ga = new GeneticAlgorithm($chromosomes, $threshold, 2);
+    $this->assertSame($chromosomes[0], $ga->run());
+  }
+
+  public function runProvider() {
+    return [
+      [1],
+      [2]
+    ];
+  }
 }
 
 class DummyChromosome extends Chromosome {
+  public $mutated = FALSE;
+
   public function fitness(): float {
     return 1;
   }
@@ -105,6 +140,6 @@ class DummyChromosome extends Chromosome {
   }
 
   public function mutate() {
-    // Nothing to do here
+    $this->mutated = TRUE;
   }
 }

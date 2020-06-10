@@ -93,7 +93,7 @@ class SimpleEquation extends Chromosome {
   */
   public function __toString(): string {
     return sprintf(
-      "X: %d, Y: %d, Fitness: %f",
+      "X: %d, Y: %d, Fitness: %.2f",
       $this->x,
       $this->y,
       $this->fitness()
