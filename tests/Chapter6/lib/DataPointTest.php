@@ -22,6 +22,14 @@ final class DataPointTest extends TestCase {
   }
 
   /**
+  * @covers DataPoint::__get
+  */
+  public function testGetUnknownProperty() {
+    $dp = new DataPoint([10, 100]);
+    $this->assertNull($dp->unknownProperty);
+  }
+
+  /**
   * @covers DataPoint::distance
   */
   public function testDistance() {

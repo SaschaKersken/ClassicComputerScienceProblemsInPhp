@@ -45,7 +45,8 @@ final class NodeTest extends TestCase {
       ['state', 'Test'],
       ['parent', 'Parent'],
       ['cost', 1.0],
-      ['heuristic', 2.0]
+      ['heuristic', 2.0],
+      ['unknownProperty', NULL]
     ];
   }
 }

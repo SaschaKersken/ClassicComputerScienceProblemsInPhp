@@ -56,7 +56,8 @@ The boat is on the west bank.";
       ['wc', 3],
       ['em', 0],
       ['ec', 0],
-      ['boat', TRUE]
+      ['boat', TRUE],
+      ['unknownProperty', NULL]
     ];
   }
 

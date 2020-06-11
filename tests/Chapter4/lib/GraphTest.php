@@ -25,7 +25,8 @@ final class GraphTest extends TestCase {
   public function getProvider() {
     return [
       ['vertexCount', 2],
-      ['edgeCount', 0]
+      ['edgeCount', 0],
+      ['unknownProperty', NULL]
     ];
   }
 

@@ -14,6 +14,14 @@ final class StackTest extends TestCase {
   }
 
   /**
+  * @covers Stack::__get
+  */
+  public function testGetUnknownProperty() {
+    $stack = new Stack();
+    $this->assertNull($stack->noSuchProperty);
+  }
+
+  /**
   * @covers Stack::push
   */
   public function testPush() {
