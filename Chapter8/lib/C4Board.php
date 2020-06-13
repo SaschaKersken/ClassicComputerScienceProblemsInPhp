@@ -102,7 +102,7 @@ class C4Board implements Board {
   * @param array $segment The segment to check
   * @return array Number of black pieces, number of red pieces
   */
-  private function countSegment(array $segment): array {
+  protected function countSegment(array $segment): array {
     $blackCount = 0;
     $redCount = 0;
     foreach ($segment as list($column, $row)) {
@@ -146,7 +146,7 @@ class C4Board implements Board {
   * @param Piece $player Player whose turn it is
   * @return float Score for the pieces in the segment
   */
-  private function evaluateSegment(array $segment, Piece $player): float {
+  protected function evaluateSegment(array $segment, Piece $player): float {
     list($blackCount, $redCount) = $this->countSegment($segment);
     if ($redCount > 0 && $blackCount > 0) {
       return 0; // mixed segments are neutral

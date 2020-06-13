@@ -182,7 +182,7 @@ class GeneticAlgorithm {
   *
   * @return array Best (Chromosome), average (float)
   */
-  private function _bestAndAvgByFitness(): array {
+  protected function _bestAndAvgByFitness(): array {
     $best = $this->_population[0];
     $sum = 0;
     foreach ($this->_population as $individual) {

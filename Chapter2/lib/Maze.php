@@ -115,7 +115,7 @@ class Maze {
   * @param int $columns Number of columns
   * @param float $sparseness Probability for each cell to be blocked
   */
-  private function randomlyFill(int $rows, int $columns, float $sparseness) {
+  protected function randomlyFill(int $rows, int $columns, float $sparseness) {
     for ($row = 0; $row < $rows; $row++) {
       for ($column = 0; $column < $columns; $column++) {
         if ((float)rand() / (float)getrandmax() < $sparseness) {

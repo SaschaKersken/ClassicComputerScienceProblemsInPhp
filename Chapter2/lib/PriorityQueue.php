@@ -66,7 +66,7 @@ class PriorityQueue extends Queue {
   * @param mixed $item Item to test
   * @return bool TRUE if Node, otherwise FALSE
   */
-  private function isNode($item): bool {
+  protected function isNode($item): bool {
     if (is_object($item) && get_class($item) == 'Node') {
       return TRUE;
     }

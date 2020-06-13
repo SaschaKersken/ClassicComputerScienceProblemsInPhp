@@ -50,7 +50,7 @@ class Codon {
   * @throws InvalidArgumentException from Nucleotide::__construct() if wrong value
   * @return Nucleotide
   */
-  private function sanitize($n) {
+  protected function sanitize($n) {
     
     if (gettype($n) == 'object' && get_class($n) == 'Nucleotide') {
       return $n;

@@ -49,7 +49,7 @@ class WordSearchConstraint extends Constraint {
   * @param array $array The array to make unique
   * @return array The processed array
   */
-  private function unique(array $array): array {
+  protected function unique(array $array): array {
     return array_map(
       'unserialize',
       array_unique(array_map('serialize', $array))
