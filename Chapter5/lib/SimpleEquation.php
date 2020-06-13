@@ -14,13 +14,13 @@ class SimpleEquation extends Chromosome {
   * x value of the equation
   * @var int
   */
-  private $x = 0;
+  public $x = 0;
 
   /**
   * y value of the equation
   * @var int
   */
-  private $y = 0;
+  public $y = 0;
 
   /**
   * Constructor
@@ -71,14 +71,14 @@ class SimpleEquation extends Chromosome {
   * Mutate
   */
   public function mutate() {
-    if ((float)rand() / getrandmax() > 0.5) { // Mutate x
-      if ((float)rand() / getrandmax() > 0.5) {
+    if ($this->randomFloat() > 0.5) { // Mutate x
+      if ($this->randomFloat() > 0.5) {
         $this->x++;
       } else {
         $this->x--;
       }
     } else { // Otherwise mutate y
-      if ((float)rand() / getrandmax() > 0.5) {
+      if ($this->randomFloat() > 0.5) {
         $this->y++;
       } else {
         $this->y--;
@@ -98,5 +98,14 @@ class SimpleEquation extends Chromosome {
       $this->y,
       $this->fitness()
     );
+  }
+
+  /**
+  * Get a random float between 0 and 1
+  *
+  * @return float Random float
+  */
+  protected function randomFloat(): float {
+    return (float)rand() / getrandmax();
   }
 }

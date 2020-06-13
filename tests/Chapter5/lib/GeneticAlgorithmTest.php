@@ -101,6 +101,20 @@ final class GeneticAlgorithmTest extends TestCase {
   }
 
   /**
+  * @covers GeneticAlgorithm::_bestAndAvgByFitness
+  */
+  public function testBestAndAvgByFitness() {
+    $chromosomes = [
+      new DummyChromosome(1),
+      new DummyChromosome(2),
+      new DummyChromosome(2),
+      new DummyChromosome(3)
+    ];
+    $ga = new GeneticAlgorithm_TestProxy($chromosomes, 1, 2);
+    $this->assertEquals([$chromosomes[3], 2], $ga->_bestAndAvgByFitness());
+  }
+
+  /**
   * @covers GeneticAlgorithm::run
   * @dataProvider runProvider
   */
@@ -127,8 +141,14 @@ final class GeneticAlgorithmTest extends TestCase {
 class DummyChromosome extends Chromosome {
   public $mutated = FALSE;
 
+  private $fitness = 1;
+
+  public function __construct(int $fitness = 1) {
+    $this->fitness = $fitness;
+  }
+
   public function fitness(): float {
-    return 1;
+    return $this->fitness;
   }
 
   public static function randomInstance(): Chromosome {
@@ -141,5 +161,11 @@ class DummyChromosome extends Chromosome {
 
   public function mutate() {
     $this->mutated = TRUE;
+  }
+}
+
+class GeneticAlgorithm_TestProxy extends GeneticAlgorithm {
+  public function _bestAndAvgByFitness(): array {
+    return parent::_bestAndAvgByFitness();
   }
 }

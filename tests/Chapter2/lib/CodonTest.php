@@ -22,6 +22,22 @@ final class CodonTest extends TestCase {
   }
 
   /**
+  * @covers Codon::sanitize
+  * @dataProvider sanitizeProvider
+  */
+  public function testSanitize($data, $expected) {
+    $codon = new Codon_TestProxy('A', 'C', 'G');
+    $this->assertEquals($expected, $codon->sanitize($data));
+  }
+
+  public function sanitizeProvider() {
+    return [
+      [new Nucleotide('A'), new Nucleotide('A')],
+      ['A', new Nucleotide('A')]
+    ];
+  }
+
+  /**
   * @covers Codon::getNucleotides
   */
   public function testGetNucleotides() {
@@ -38,5 +54,11 @@ final class CodonTest extends TestCase {
   public function testToString() {
     $codon = new Codon(['A', 'C', 'G', 'T']);
     $this->assertEquals('ACG', $codon->__toString());
+  }
+}
+
+class Codon_TestProxy extends Codon {
+  public function sanitize($n) {
+    return parent::sanitize($n);
   }
 }

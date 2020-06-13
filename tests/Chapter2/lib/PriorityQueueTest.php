@@ -53,4 +53,26 @@ final class PriorityQueueTest extends TestCase {
     $pq->push(23);
     $this->assertEquals(23, $pq->pop());
   }
+
+  /**
+  * @covers PriorityQueue::isNode
+  * @dataProvider isNodeProvider
+  */
+  public function testIsNode($item, $expected) {
+    $pq = new PriorityQueue_TestProxy();
+    $this->assertEquals($expected, $pq->isNode($item));
+  }
+
+  public function isNodeProvider() {
+    return [
+      [new Node(NULL, NULL, 2.0, 2.0), TRUE],
+      [42, FALSE]
+    ];
+  }
+}
+
+class PriorityQueue_TestProxy extends PriorityQueue {
+  public function isNode($item): bool {
+    return parent::isNode($item);
+  }
 }
