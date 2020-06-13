@@ -2,10 +2,32 @@
 
 require_once(__DIR__.'/../../Util.php');
 
+/**
+* TTTBoard class
+*
+* Board (game position) in a tic-tac-toe game
+*
+* @package ClassicComputerScienceProblemsInPhp
+*/
 class TTTBoard implements Board {
+  /**
+  * Current game position
+  * @var array
+  */
   private $position = [];
+
+  /**
+  * Piece indicating which player's turn it is
+  * @var TTTPiece
+  */
   private $turn = NULL;
 
+  /**
+  * Constructor
+  *
+  * @param array Game position
+  * @param TTTPiece $turn Piece indicating which player's turn it is
+  */
   public function __construct(array $position = NULL, TTTPiece $turn = NULL) {
     if (is_null($position)) {
       $this->position = array_map(
@@ -24,16 +46,32 @@ class TTTBoard implements Board {
     }
   }
 
+  /**
+  * Piece that indicates whose turn it is
+  *
+  * @return Piece The piece indicating the current turn
+  */
   public function turn(): Piece {
     return $this->turn;
   }
 
+  /**
+  * Move: add piece to a specific location
+  *
+  * @param int $location The location to add a piece to
+  * @return Board New game position after adding the piece
+  */
   public function move(int $location): Board {
     $tempPosition = $this->position;
     $tempPosition[$location] = $this->turn;
     return new TTTBoard($tempPosition, $this->turn->opposite());
   }
 
+  /**
+  * Get a list of legal moves
+  *
+  * @return array List of legal moves
+  */
   public function legalMoves(): array {
     return array_keys(
       array_filter(
@@ -45,6 +83,11 @@ class TTTBoard implements Board {
     );
   }
 
+  /**
+  * Is the current position a win?
+  *
+  * @return bool TRUE if win, otherwise FALSE
+  */
   public function isWin(): bool {
     $tuples = [
       [0, 1, 2],
@@ -70,10 +113,21 @@ class TTTBoard implements Board {
     return FALSE;
   }
 
+  /**
+  * Is the current position a draw?
+  *
+  * @return TRUE if draw, otherwise FALSE
+  */
   public function isDraw(): bool {
     return !$this->isWin() && count($this->legalMoves()) == 0;
   }
 
+  /**
+  * Evaluate the current position
+  *
+  * @param Piece $player Piece of the player whose turn it is
+  * @return float Score for the current position
+  */
   public function evaluate(Piece $player): float {
     if ($this->isWin() && $this->turn == $player) {
       return -1;
@@ -84,6 +138,11 @@ class TTTBoard implements Board {
     }
   }
 
+  /**
+  * String representation
+  *
+  * @return string The string representation
+  */
   public function __toString() {
     $result = sprintf(
       "%s|%s|%s\n", $this->position[0], $this->position[1], $this->position[2]

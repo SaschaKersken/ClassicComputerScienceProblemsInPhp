@@ -14,11 +14,30 @@ class C4Board implements Board {
   const NUM_COLUMNS = 7;
   const SEGMENT_LENGTH = 4;
 
+  /**
+  * Segments to look at for winning moves
+  * @var array
+  */
   private static $segments = [];
 
+  /**
+  * Current playing position
+  * @var array
+  */
   private $position = [];
+
+  /**
+  * Indicate whose turn it is
+  * @var C4Piece
+  */
   private $_turn = NULL;
 
+  /**
+  * Constructor
+  *
+  * @param array $position Current playing position optional, default NULL
+  * @param C4Piece $turn Indicate whose turn it is optional, default NULL
+  */
   public function __construct(array $position = NULL, C4Piece $turn = NULL) {
     if (is_null($position)) {
       $this->position = array_map(
@@ -37,10 +56,21 @@ class C4Board implements Board {
     }
   }
 
+  /**
+  * Piece that indicates whose turn it is
+  *
+  * @return Piece The piece indicating the current turn
+  */
   public function turn(): Piece {
     return $this->_turn;
   }
 
+  /**
+  * Move: push a piece into the indicated column
+  *
+  * @param int $location The column to push a piece into
+  * @return Board Game position after the move
+  */
   public function move(int $location): Board {
     $tempPosition = [];
     for ($i = 0; $i < self::NUM_COLUMNS; $i++) {
@@ -50,6 +80,11 @@ class C4Board implements Board {
     return new C4Board($tempPosition, $this->_turn->opposite());
   }
 
+  /**
+  * Get the list of legal moves
+  *
+  * @return array Legal moves
+  */
   public function legalMoves(): array {
     return array_keys(
       array_filter(
@@ -61,6 +96,12 @@ class C4Board implements Board {
     );
   }
 
+  /**
+  * Return the count of red & black pieces in a segment
+  *
+  * @param array $segment The segment to check
+  * @return array Number of black pieces, number of red pieces
+  */
   private function countSegment(array $segment): array {
     $blackCount = 0;
     $redCount = 0;
@@ -74,18 +115,14 @@ class C4Board implements Board {
     return [$blackCount, $redCount];
   }
 
-private function _segmentToString($segment) {
-  $result = '<';
-  foreach ($segment as list($column, $row)) {
-    $result .= $this->position[$column][$row]->value();
-  }
-  $result .= '>';
-  return $result;
-}
+  /**
+  * Is the current position a win?
+  *
+  * @return bool TRUE if win, otherwise FALSE
+  */
   public function isWin(): bool {
     foreach ($this->getSegments() as $segment) {
       list($blackCount, $redCount) = $this->countSegment($segment);
-//if ($blackCount > 0 || $redCount > 0) { printf("%s - Black: %d - Red: %d\n", $this->_segmentToString($segment), $blackCount, $redCount); }
       if ($blackCount == 4 || $redCount == 4) {
         return TRUE;
       }
@@ -93,10 +130,22 @@ private function _segmentToString($segment) {
     return FALSE;
   }
 
+  /**
+  * Is the current position a draw?
+  *
+  * @return bool TRUE if win, otherwise FALSE
+  */
   public function isDraw(): bool {
     return !$this->isWin() && count($this->legalMoves()) == 0;
   }
 
+  /**
+  * Evaluate a segment
+  *
+  * @param array $segment The segment to evaluate
+  * @param Piece $player Player whose turn it is
+  * @return float Score for the pieces in the segment
+  */
   private function evaluateSegment(array $segment, Piece $player): float {
     list($blackCount, $redCount) = $this->countSegment($segment);
     if ($redCount > 0 && $blackCount > 0) {
@@ -121,6 +170,12 @@ private function _segmentToString($segment) {
     return $score;
   }
 
+  /**
+  * Evaluate the current position
+  *
+  * @param Piece $player Player whose turn it is
+  * @return float Total score for this position
+  */
   public function evaluate(Piece $player): float {
     $total = 0;
     foreach (self::$segments as $segment) {
@@ -129,6 +184,11 @@ private function _segmentToString($segment) {
     return $total;
   }
 
+  /**
+  * Get all segments (generate them if this hasn't happened yet)
+  *
+  * @return array List of all segments
+  */
   public static function getSegments(): array {
     if (empty(self::$segments)) {
       self::generateSegments();
@@ -136,7 +196,11 @@ private function _segmentToString($segment) {
     return self::$segments;
   }
 
+  /**
+  * Generate all segments
+  */
   public static function generateSegments() {
+    // Generate the vertical segments
     for ($c = 0; $c < self::NUM_COLUMNS; $c++) {
       for ($r = 0; $r <= self::NUM_ROWS - self::SEGMENT_LENGTH; $r++) {
         $segment = [];
@@ -147,6 +211,7 @@ private function _segmentToString($segment) {
       }
     }
 
+    // Generate the horizontal segments
     for ($c = 0; $c <= self::NUM_COLUMNS - self::SEGMENT_LENGTH; $c++) {
       for ($r = 0; $r < self::NUM_ROWS; $r++) {
         $segment = [];
@@ -157,6 +222,7 @@ private function _segmentToString($segment) {
       }
     }
 
+    // Generate the bottom left to top right diagonal segments
     for ($c = 0; $c <= self::NUM_COLUMNS - self::SEGMENT_LENGTH; $c++) {
       for ($r = 0; $r <= self::NUM_ROWS - self::SEGMENT_LENGTH; $r++) {
         $segment = [];
@@ -167,6 +233,7 @@ private function _segmentToString($segment) {
       }
     }
 
+    // Generate the top left to bottom right diagonal segments
     for ($c = 0; $c <= self::NUM_COLUMNS - self::SEGMENT_LENGTH; $c++) {
       for ($r = self::SEGMENT_LENGTH - 1; $r < self::NUM_ROWS; $r++) {
         $segment = [];
@@ -178,6 +245,11 @@ private function _segmentToString($segment) {
     }
   } 
 
+  /**
+  * String representation
+  *
+  * @return string The string representation
+  */
   public function __toString(): string {
     $display = '';
     for ($r = self::NUM_ROWS - 1; $r >= 0; $r--) {
