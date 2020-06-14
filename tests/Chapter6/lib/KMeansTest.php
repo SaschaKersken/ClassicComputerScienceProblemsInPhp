@@ -96,6 +96,84 @@ final class KMeansTest extends TestCase {
     $kMeans = new KMeans_TestProxy(2, [new DataPoint([1, 2]), new DataPoint([3, 4])]);
     $this->assertEquals([-1, 1], $kMeans->_dimensionSlice(0));
   }
+
+  /**
+  * @covers KMeans::_zscoreNormalize
+  */
+  public function testZscoreNormalize() {
+    $kMeans = new KMeans_TestProxy(2, [new DataPoint([1, 2]), new DataPoint([3, 4])]);
+    $kMeans->_zscoreNormalize();
+    $points = $kMeans->_getPoints();
+    $this->assertEquals(
+      [[-1, -1], [1, 1]],
+      [$points[0]->dimensions, $points[1]->dimensions]
+    );
+  }
+
+  /**
+  * @covers KMeans::_randomPoint
+  */
+  public function testRandomPoint() {
+    $kMeans = new KMeans_TestProxy(2, [new DataPoint([1, 2]), new DataPoint([3, 4])]);
+    $dimensions = $kMeans->_randomPoint()->dimensions;
+    $this->assertGreaterThanOrEqual(-1, $dimensions[0]);
+    $this->assertGreaterThanOrEqual(-1, $dimensions[1]);
+    $this->assertLessThanOrEqual(1, $dimensions[0]);
+    $this->assertLessThanOrEqual(1, $dimensions[1]);
+  }
+
+  /**
+  * @covers KMeans::_assignClusters
+  */
+  public function testAssignClusters() {
+    $points =  [new DataPoint([1, 2]), new DataPoint([3, 4])];
+    $kMeans = new KMeans_TestProxy(1, $points);
+    $kMeans->_assignClusters();
+    $clusters = $kMeans->_getClusters();
+    $this->assertEquals($points, $clusters[0]->points);
+  }
+
+  /**
+  * @covers KMeans::_generateCentroids
+  * @dataProvider generateCentroidsProvider
+  */
+  public function testGenerateCentroids($assignClusters) {
+    $point = new DataPoint([1, 2]);
+    $kMeans = new KMeans_TestProxy(1, [$point]);
+    if ($assignClusters) {
+      $kMeans->_assignClusters();
+    }
+    $kMeans->_generateCentroids();
+    $clusters = $kMeans->_getClusters();
+    $this->assertEquals($clusters[0]->centroid->dimensions, $point->dimensions);
+  }
+
+  public function generateCentroidsProvider() {
+    return [
+      [FALSE],
+      [TRUE]
+    ];
+  }
+
+  /**
+  * @covers KMeans::run
+  */
+  public function testRunConvergence() {
+    $point = new DataPoint([1, 2]);
+    $kMeans = new KMeans(1, [$point]);
+    $clusters = $kMeans->run();
+    $this->assertEquals($point, $clusters[0]->points[0]);
+  }
+
+  /**
+  * @covers KMeans::run
+  */
+  public function testRunNoConvergence() {
+    $points = [new DataPoint([1, 2]), new DataPoint([3, 4])];
+    $kMeans = new KMeans(1, $points);
+    $clusters = $kMeans->run(1);
+    $this->assertEquals($points, $clusters[0]->points);
+  }
 }
 
 class KMeans_TestProxy extends KMeans {
@@ -103,7 +181,7 @@ class KMeans_TestProxy extends KMeans {
     return parent::_dimensionSlice($dimension);
   }
 
-  public function _zcorseNormalize() {
+  public function _zscoreNormalize() {
     parent::_zscoreNormalize();
   }
 
@@ -117,5 +195,14 @@ class KMeans_TestProxy extends KMeans {
 
   public function _generateCentroids() {
     parent::_generateCentroids();
+  }
+
+  // Helper methods to get protected property values for testing
+  public function _getPoints() {
+    return $this->_points;
+  }
+
+  public function _getClusters() {
+    return $this->_clusters;
   }
 }
