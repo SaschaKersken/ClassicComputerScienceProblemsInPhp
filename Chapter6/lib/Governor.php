@@ -49,7 +49,7 @@ class Governor extends DataPoint {
   */
   public function __toString(): string {
     return sprintf(
-      '%s: (longitude: %f, age: %d)',
+      '%s: (longitude: %.6f, age: %d)',
       $this->state,
       $this->longitude,
       $this->age
