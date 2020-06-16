@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__.'/../../../Chapter3/lib/Constraint.php');
+
 use PHPUnit\Framework\TestCase;
 
 final class CSPTest extends TestCase {
