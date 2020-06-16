@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 function linearContains($iterable, $key): bool {
   foreach ($iterable as $item) {

@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/../Chapter2/generic_search.php');
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 /**
 * Calculate the total weight of a weighted path

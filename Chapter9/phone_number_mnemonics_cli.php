@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/phone_number_mnemonics_lib.php');
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 Util::out("Enter a phone number: ", TRUE);
 $phoneNumber = readline();

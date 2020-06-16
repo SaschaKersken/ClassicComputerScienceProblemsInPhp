@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 $initialPopulation = [];
 for ($i = 0; $i < 1000; $i++) {

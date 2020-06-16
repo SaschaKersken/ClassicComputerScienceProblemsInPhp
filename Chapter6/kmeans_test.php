@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 $point1 = new DataPoint([2.0, 1.0, 1.0]);
 $point2 = new DataPoint([2.0, 2.0, 5.0]);

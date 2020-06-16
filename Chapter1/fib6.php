@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 function fib6(int $n) {
   yield 0; // Special case

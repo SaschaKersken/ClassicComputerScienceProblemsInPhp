@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/../Chapter2/generic_search.php');
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 $cityGraph = new Graph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
 $cityGraph->addEdgeByVertices("Seattle", "Chicago");

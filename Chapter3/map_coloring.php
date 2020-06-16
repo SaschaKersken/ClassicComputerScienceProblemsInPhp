@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 $variables = ["Western Australia", "Northern Territory", "South Australia",
               "Queensland", "New South Wales", "Victoria", "Tasmania"];

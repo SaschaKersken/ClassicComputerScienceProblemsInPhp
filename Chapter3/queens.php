@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 $columns = [1, 2, 3, 4, 5, 6, 7, 8];
 $rows = [];

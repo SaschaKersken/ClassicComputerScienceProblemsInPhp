@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 function getPlayerMove(C4Board $board): int {
   $playerMove = -1;

@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/generic_search.php');
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 /**
 * Generate a function to calculate the euclidian distance to a goal

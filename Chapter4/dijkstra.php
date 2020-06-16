@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 require_once(__DIR__.'/../Chapter2/generic_search.php');
 
 /**

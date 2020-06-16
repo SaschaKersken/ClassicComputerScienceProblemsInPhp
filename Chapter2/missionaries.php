@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/generic_search.php');
-require_once(__DIR__.'/../Util.php');
+require_once(__DIR__.'/../Autoloader.php');
 
 function displaySolution(array $path) {
   if (count($path) == 0) {
