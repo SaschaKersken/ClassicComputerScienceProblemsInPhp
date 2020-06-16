@@ -38,6 +38,29 @@ final class MazeTest extends TestCase {
   }
 
   /**
+  * @covers Maze::randomlyFill
+  */
+  public function testRandomlyFill() {
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $randomizer
+      ->expects($this->exactly(9))
+      ->method('randomFloat')
+      ->will($this->onConsecutiveCalls(1, 0, 1, 0, 1, 0, 1, 0, 1));
+    $maze = new Maze_TestProxy(
+      3,
+      3,
+      0,
+      new MazeLocation(0, 0),
+      new MazeLocation(2, 2)
+    );
+    $maze->randomizer($randomizer);
+    $maze->randomlyFill(3, 3, 0.5);
+    $this->assertEquals("SX \nX X\n XG\n", $maze->__toString());
+  }
+
+  /**
   * @covers Maze::__toString
   */
   public function testToString() {
@@ -71,7 +94,7 @@ final class MazeTest extends TestCase {
   }
 
   /**
-  * covers Maze::getStart
+  * @covers Maze::getStart
   */
   public function testGetStart() {
     $start = new MazeLocation(0, 0);
@@ -80,11 +103,36 @@ final class MazeTest extends TestCase {
   }
 
   /**
-  * covers Maze::getGoal
+  * @covers Maze::getGoal
   */
   public function testGetGoal() {
     $goal = new MazeLocation(2, 2);
     $maze = new Maze(3, 3, 0, new MazeLocation(0, 0), $goal);
     $this->assertSame($goal, $maze->getGoal());
+  }
+
+  /**
+  * @covers Maze::randomizer
+  */
+  public function testRandomizerSet() {
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $maze = new Maze(3, 3, 0, new MazeLocation(0, 0), new MazeLocation(2, 2));
+    $this->assertSame($randomizer, $maze->randomizer($randomizer));
+  }
+
+  /**
+  * @covers Maze::randomizer
+  */
+  public function testRandomizerInit() {
+    $maze = new Maze(3, 3, 0, new MazeLocation(0, 0), new MazeLocation(2, 2));
+    $this->assertInstanceOf('Randomizer', $maze->randomizer());
+  }
+}
+
+class Maze_TestProxy extends Maze {
+  public function randomlyFill(int $rows, int $columns, float $sparseness) {
+    parent::randomlyFill($rows, $columns, $sparseness);
   }
 }

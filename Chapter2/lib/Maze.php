@@ -11,6 +11,12 @@ require_once(__DIR__.'/../../Util.php');
 */
 class Maze {
   /**
+  * Randomizer instance to use
+  * @var Randomizer
+  */
+  private $randomizer = NULL;
+
+  /**
   * Number of rows
   * @var int
   */
@@ -118,7 +124,7 @@ class Maze {
   protected function randomlyFill(int $rows, int $columns, float $sparseness) {
     for ($row = 0; $row < $rows; $row++) {
       for ($column = 0; $column < $columns; $column++) {
-        if ((float)rand() / (float)getrandmax() < $sparseness) {
+        if ($this->randomizer()->randomFloat() < $sparseness) {
           $this->_grid[$row][$column] = Cell::BLOCKED;
         }
       }
@@ -180,5 +186,20 @@ class Maze {
   */
   public function getGoal() {
     return $this->goal;
+  }
+
+  /**
+  * Get/set the Randomizer instance to use
+  *
+  * @param Randomizer $randomizer Object to inject optional, default NULL
+  * @return Randomizer The injected, new, or previously initialized Randomizer
+  */
+  public function randomizer(Randomizer $randomizer = NULL): Randomizer {
+    if (!is_null($randomizer)) {
+      $this->randomizer = $randomizer;
+    } elseif (is_null($this->randomizer)) {
+      $this->randomizer = new Randomizer();
+    }
+    return $this->randomizer;
   }
 }
