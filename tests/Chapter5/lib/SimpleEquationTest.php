@@ -1,6 +1,4 @@
 <?php
-  
-require_once(__DIR__.'/../../../Util.php');
 
 use PHPUnit\Framework\TestCase;
 
