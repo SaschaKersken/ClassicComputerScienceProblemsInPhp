@@ -12,6 +12,12 @@ require_once(__DIR__.'/../../Autoloader.php');
 */
 class GeneticAlgorithm {
   /**
+  * Randomizer instance to use
+  * @var Randomizer
+  */
+  private $randomizer = NULL;
+
+  /**
   * The population of the current generation
   * @var array
   */
@@ -83,7 +89,7 @@ class GeneticAlgorithm {
     $max = array_sum($weights);
     $picks = [];
     for ($i = 0; $i < $k; $i++) {
-      $r = (float)rand() / getrandmax() * $max;
+      $r = $this->randomizer()->randomFloat() * $max;
       $counter = 0;
       while ($r > 0) {
         $r -= $weights[$counter];
@@ -150,7 +156,7 @@ class GeneticAlgorithm {
         $parents = $this->pickTournament(floor(count($this->_population) / 2));
       }
       // Potentially crossover the 2 parents
-      if ((float)rand() / getrandmax() < $this->_crossoverChance) {
+      if ($this->randomizer()->randomFloat() < $this->_crossoverChance) {
         $newPopulation = array_merge(
           $newPopulation,
           $parents[0]->crossover($parents[1])
@@ -171,7 +177,7 @@ class GeneticAlgorithm {
   */
   public function mutate() {
     foreach ($this->_population as $individual) {
-      if ((float)rand() / getrandmax() < $this->_mutationChance) {
+      if ($this->randomizer()->randomFloat() < $this->_mutationChance) {
         $individual->mutate();
       }
     }
@@ -226,5 +232,20 @@ class GeneticAlgorithm {
       }
     }
     return $best; // Best we found in $this->_maxGenerations
+  }
+
+  /**
+  * Get/set the Randomizer instance to use
+  *
+  * @param Randomizer $randomizer Object to inject optional, default NULL
+  * @return Randomizer The injected, new, or previously initialized Randomizer
+  */
+  public function randomizer(Randomizer $randomizer = NULL): Randomizer {
+    if (!is_null($randomizer)) {
+      $this->randomizer = $randomizer;
+    } elseif (is_null($this->randomizer)) {
+      $this->randomizer = new Randomizer();
+    }
+    return $this->randomizer;
   }
 }

@@ -134,6 +134,25 @@ final class GeneticAlgorithmTest extends TestCase {
       [2]
     ];
   }
+
+  /**
+  * @covers GeneticAlgorithm::randomizer
+  */
+  public function testRandomizerSet() {
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $ga = new GeneticAlgorithm([], 1, 2);
+    $this->assertSame($randomizer, $ga->randomizer($randomizer));
+  }
+
+  /**
+  * @covers GeneticAlgorithm::randomizer
+  */
+  public function testRandomizerInit() {
+    $ga = new GeneticAlgorithm([], 1, 2);
+    $this->assertInstanceOf('Randomizer', $ga->randomizer());
+  }
 }
 
 class DummyChromosome extends Chromosome {
