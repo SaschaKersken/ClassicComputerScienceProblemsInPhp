@@ -56,4 +56,26 @@ final class SendMoreMoney2Test extends TestCase {
       $send->__toString()
     );
   }
+
+  /**
+  * @covers SendMoreMoney2::randomizer
+  */
+  public function testRandomizerSet() {
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $send = SendMoreMoney2::randomInstance();
+    $this->assertSame(
+      $randomizer,
+      $send->randomizer($randomizer)
+    );
+  }
+
+  /**
+  * @covers SendMoreMoney2::randomizer
+  */
+  public function testRandomizerInit() {
+    $send = SendMoreMoney2::randomInstance();
+    $this->assertInstanceOf('Randomizer', $send->randomizer());
+  }
 }

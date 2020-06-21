@@ -12,7 +12,14 @@ require_once(__DIR__.'/../../Autoloader.php');
 */
 class SendMoreMoney2 extends Chromosome {
   /**
+  * Randomizer object to use
+  * @var Randomizer
+  */
+  private $randomizer = NULL;
+
+  /**
   * Current chromosome's letter assignment
+  * @var array
   */
   public $letters = [];
 
@@ -65,8 +72,8 @@ class SendMoreMoney2 extends Chromosome {
   public function crossover(Chromosome $other): array {
     $child1 = clone $this;
     $child2 = clone $other;
-    $idx1 = rand(0, count($this->letters) - 1);
-    $idx2 = rand(0, count($this->letters) - 1);
+    $idx1 = $this->randomizer()->randomIntRange(0, count($this->letters) - 1);
+    $idx2 = $this->randomizer()->randomIntRange(0, count($this->letters) - 1);
     $l1 = $child1->letters[$idx1];
     $l2 = $child2->letters[$idx2];
     $child1->letters[array_search($l2, $child1->letters)] = $child1->letters[$idx2];
@@ -80,8 +87,8 @@ class SendMoreMoney2 extends Chromosome {
   * Mutate: swap two letters' locations
   */
   public function mutate() {
-    $idx1 = rand(0, count($this->letters) - 1);
-    $idx2 = rand(0, count($this->letters) - 1);
+    $idx1 = $this->randomizer()->randomIntRange(0, count($this->letters) - 1);
+    $idx2 = $this->randomizer()->randomIntRange(0, count($this->letters) - 1);
     $helper = $this->letters[$idx1];
     $this->letters[$idx1] = $this->letters[$idx2];
     $this->letters[$idx2] = $helper;
@@ -106,5 +113,20 @@ class SendMoreMoney2 extends Chromosome {
     $money = $m * 10000 + $o * 1000 + $n * 100 + $e * 10 + $y;
     $difference = abs($money - ($send + $more));
     return sprintf('%d + %d = %d; Difference: %d', $send, $more, $money, $difference);
+  }
+
+  /**
+  * Get/set the Randomizer instance to use
+  *
+  * @param Randomizer $randomizer Object to inject optional, default NULL
+  * @return Randomizer The injected, new, or previously initialized Randomizer
+  */
+  public function randomizer(Randomizer $randomizer = NULL): Randomizer {
+    if (!is_null($randomizer)) {
+      $this->randomizer = $randomizer;
+    } elseif (is_null($this->randomizer)) {
+      $this->randomizer = new Randomizer();
+    }
+    return $this->randomizer;
   }
 }

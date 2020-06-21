@@ -15,7 +15,18 @@ class Randomizer {
   *
   * @return float Random floating-point number
   */
-  public function randomFloat() {
+  public function randomFloat(): float {
     return (float)rand() / (float)getrandmax();
+  }
+
+  /**
+  * Get a random integer within a given range
+  *
+  * @param int $min Minimum range value
+  * @param int $max Maximum range value
+  * @return int Random integer
+  */
+  public function randomIntRange(int $min, int $max): int {
+    return rand($min, $max);
   }
 }

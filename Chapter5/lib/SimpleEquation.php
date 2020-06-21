@@ -11,6 +11,12 @@ require_once(__DIR__.'/../../Autoloader.php');
 */
 class SimpleEquation extends Chromosome {
   /**
+  * Randomizer to use
+  * @var Randomizer
+  */
+  private $randomizer = NULL;
+
+  /**
   * x value of the equation
   * @var int
   */
@@ -71,14 +77,14 @@ class SimpleEquation extends Chromosome {
   * Mutate
   */
   public function mutate() {
-    if ($this->randomFloat() > 0.5) { // Mutate x
-      if ($this->randomFloat() > 0.5) {
+    if ($this->randomizer()->randomFloat() > 0.5) { // Mutate x
+      if ($this->randomizer()->randomFloat() > 0.5) {
         $this->x++;
       } else {
         $this->x--;
       }
     } else { // Otherwise mutate y
-      if ($this->randomFloat() > 0.5) {
+      if ($this->randomizer()->randomFloat() > 0.5) {
         $this->y++;
       } else {
         $this->y--;
@@ -101,11 +107,17 @@ class SimpleEquation extends Chromosome {
   }
 
   /**
-  * Get a random float between 0 and 1
+  * Get/set the Randomizer instance to use
   *
-  * @return float Random float
+  * @param Randomizer $randomizer Object to inject optional, default NULL
+  * @return Randomizer The injected, new, or previously initialized Randomizer
   */
-  protected function randomFloat(): float {
-    return (float)rand() / getrandmax();
+  public function randomizer(Randomizer $randomizer = NULL): Randomizer {
+    if (!is_null($randomizer)) {
+      $this->randomizer = $randomizer;
+    } elseif (is_null($this->randomizer)) {
+      $this->randomizer = new Randomizer();
+    }
+    return $this->randomizer;
   }
 }

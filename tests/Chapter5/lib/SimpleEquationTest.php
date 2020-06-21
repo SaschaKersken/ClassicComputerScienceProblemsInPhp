@@ -42,7 +42,15 @@ final class SimpleEquationTest extends TestCase {
   * @dataProvider mutateProvider
   */
   public function testMutate($random1, $random2, $expected) {
-    $equation = new SimpleEquation_TestProxy(23, 42, [$random1, $random2]);
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $randomizer
+      ->expects($this->exactly(2))
+      ->method('randomFloat')
+      ->will($this->onConsecutiveCalls($random1, $random2));
+    $equation = new SimpleEquation(23, 42);
+    $equation->randomizer($randomizer);
     $equation->mutate();
     $this->assertEquals($expected, [$equation->x, $equation->y]);
   }
@@ -65,29 +73,21 @@ final class SimpleEquationTest extends TestCase {
   }
 
   /**
-  * @covers SimpleEquation::randomFloat
+  * @covers SimpleEquation::randomizer
   */
-  public function testRandomFloat() {
-    $equation = new SimpleEquation_TestProxy(23, 42);
-    $rand = $equation->randomFloat();
-    $this->assertGreaterThanOrEqual(0, $rand);
-    $this->assertLessThanOrEqual(1, $rand);
-  }
-}
-
-class SimpleEquation_TestProxy extends SimpleEquation {
-  private $randomQueue = [];
-
-  public function __construct(int $x, int $y, array $randomQueue = []) {
-    parent::__construct($x, $y);
-    $this->randomQueue = $randomQueue;
+  public function testRandomizerSet() {
+    $randomizer = $this
+      ->getMockBuilder('Randomizer')
+      ->getMock();
+    $equation = new SimpleEquation(23, 42);
+    $this->assertSame($randomizer, $equation->randomizer($randomizer));
   }
 
-  public function randomFloat(): float {
-    $result = array_shift($this->randomQueue);
-    if (is_null($result)) {
-      $result = parent::randomFloat();
-    }
-    return $result;
+  /**
+  * @covers SimpleEquation::randomizer
+  */
+  public function testRandomizerInit() {
+    $equation = new SimpleEquation(23, 42);
+    $this->assertInstanceOf('Randomizer', $equation->randomizer());
   }
 }
