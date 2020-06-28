@@ -8,9 +8,10 @@ function fib4(int $n): int {
   }
   $last = 0; // Initially set to fib(0)
   $next = 1; // Initially set to fib(1)
-  for ($i = 1; $i <= $n; $i++) {
+  for ($i = 1; $i < $n; $i++) {
+    $helper = $last;
     $last = $next;
-    $next = $last + $next;
+    $next += $helper;
   }
   return $next;
 }
