@@ -36,6 +36,22 @@ final class LayerTest extends TestCase {
     $layer = new Layer_TestProxy($previousLayer, 2, 0.5);
     $this->assertEquals(2, count($layer->outputs([1, 1])));
   }
+
+  /**
+  * @covers Layer::calculateDeltasForOutputLayer
+  */
+  public function testCalculateDeltasForOutputLayer() {
+    $previousLayer = new Layer_TestProxy(NULL, 2, 0.5);
+    $layer = new Layer_TestProxy($previousLayer, 2, 0.5);
+    $layer->outputs([1, 1]);
+    $layer->calculateDeltasForOutputLayer(
+      [$layer->neurons[0]->outputCache, $layer->neurons[1]->outputCache]
+    );
+    $this->assertEquals(
+      [0, 0],
+      [$layer->neurons[0]->delta, $layer->neurons[1]->delta]
+    );
+  }
 }
 
 class Layer_TestProxy extends Layer {

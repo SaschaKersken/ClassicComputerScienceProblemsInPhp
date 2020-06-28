@@ -14,6 +14,12 @@ class ListCompression extends Chromosome {
   const PEOPLE = ["Michael", "Sarah", "Joshua", "Narine", "David", "Sajid", "Melanie", "Daniel", "Wei", "Dean", "Brian", "Murat", "Lisa"];
 
   /**
+  * Randomizer to use
+  * @var Randomizer
+  */
+  private $randomizer = NULL;
+
+  /**
   * Current list
   * @var array
   */
@@ -70,8 +76,8 @@ class ListCompression extends Chromosome {
   public function crossover(Chromosome $other): array {
     $child1 = clone $this;
     $child2 = clone $other;
-    $idx1 = rand(0, count($this->list) - 1);
-    $idx2 = rand(0, count($this->list) - 1);
+    $idx1 = $this->randomizer()->randomIntRange(0, count($this->list) - 1);
+    $idx2 = $this->randomizer()->randomIntRange(0, count($this->list) - 1);
     $l1 = $child1->list[$idx1];
     $l2 = $child2->list[$idx2];
     $child1->list[array_search($l2, $child1->list)] = $child1->list[$idx2];
@@ -87,8 +93,8 @@ class ListCompression extends Chromosome {
   * Swap two locations
   */
   public function mutate() {
-    $idx1 = rand(0, count($this->list) - 1);
-    $idx2 = rand(0, count($this->list) - 1);
+    $idx1 = $this->randomizer()->randomIntRange(0, count($this->list) - 1);
+    $idx2 = $this->randomizer()->randomIntRange(0, count($this->list) - 1);
     $helper = $this->list[$idx1];
     $this->list[$idx1] = $this->list[$idx2];
     $this->list[$idx2] = $helper;
@@ -105,5 +111,20 @@ class ListCompression extends Chromosome {
       implode(', ', $this->list),
       $this->bytesCompressed
     );
+  }
+
+  /**
+  * Get/set the Randomizer instance to use
+  *
+  * @param Randomizer $randomizer Object to inject optional, default NULL
+  * @return Randomizer The injected, new, or previously initialized Randomizer
+  */
+  public function randomizer(Randomizer $randomizer = NULL): Randomizer {
+    if (!is_null($randomizer)) {
+      $this->randomizer = $randomizer;
+    } elseif (is_null($this->randomizer)) {
+      $this->randomizer = new Randomizer();
+    }
+    return $this->randomizer;
   }
 }

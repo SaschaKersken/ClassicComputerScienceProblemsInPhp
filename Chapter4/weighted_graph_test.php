@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__.'/WeightedGraph.php');
 require_once(__DIR__.'/../Autoloader.php');
 
 $cityGraph2 = new WeightedGraph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"]);
