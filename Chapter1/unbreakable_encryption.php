@@ -11,7 +11,7 @@ function encrypt(string $original): array {
   $dummy = randomKey(strlen($original));
   $encrypted = '';
   for ($i = 0; $i < strlen($original); $i++) {
-    $encrypted .= chr(ord($original[$i]) ^ ord($dummy[$i])); #XOR
+    $encrypted .= chr(ord($original[$i]) ^ ord($dummy[$i])); // XOR
   }
   return [$dummy, $encrypted];
 }
@@ -19,7 +19,7 @@ function encrypt(string $original): array {
 function decrypt(string $key1, string $key2): string {
   $decrypted = '';
   for ($i = 0; $i < strlen($key1); $i++) {
-    $decrypted .= chr(ord($key1[$i]) ^ ord($key2[$i])); #XOR
+    $decrypted .= chr(ord($key1[$i]) ^ ord($key2[$i])); // XOR
   }
   return $decrypted;
 }

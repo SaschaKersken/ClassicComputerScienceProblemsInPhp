@@ -7,7 +7,7 @@ Util::out(sprintf("Original: %d", strlen($original)));
 $compressed = new CompressedGene($original);
 Util::out(sprintf("Compressed: %d", strlen($compressed->getBitString())));
 if ($original == $compressed->decompress()) {
-  echo "Identical\n";
+  Util::out("Identical");
 } else {
-  echo "Different!\n";
+  Util::out("Different!");
 }
