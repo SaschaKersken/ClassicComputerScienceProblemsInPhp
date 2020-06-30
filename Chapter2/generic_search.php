@@ -2,6 +2,13 @@
 
 require_once(__DIR__.'/../Autoloader.php');
 
+/**
+* Linear search
+*
+* @param mixed $iterable The set to search in
+* @param mixed $key The item to search for
+* @return bool TRUE if item in set, otherwise FALSE
+*/
 function linearContains($iterable, $key): bool {
   foreach ($iterable as $item) {
     if ($item == $key) {
@@ -11,6 +18,13 @@ function linearContains($iterable, $key): bool {
   return FALSE;
 }
 
+/**
+* Binary search (requires a sorted sequence)
+*
+* @param mixed $sequence The sorted sequence to search in
+* @param mixed $key The item to search for
+* @return bool TRUE if item in sequence, otherwise FALSE
+*/
 function binaryContains($sequence, $key): bool {
   $low = 0;
   $high = count($sequence) - 1;
