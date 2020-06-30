@@ -5,12 +5,12 @@ require_once(__DIR__.'/../Autoloader.php');
 /**
 * Create a gene out of a string of nucleotides
 *
-* @param string The nucleotides
+* @param string $s The nucleotides
 * @return array The gene of codons
 */
 function stringToGene(string $s) : array {
   $gene = [];
-  for ($i = 0; $i < strlen($s); $i++) {
+  for ($i = 0; $i < strlen($s); $i += 3) {
     if ($i + 2 >= strlen($s)) { // Don't run off end
       return $gene;
     }
