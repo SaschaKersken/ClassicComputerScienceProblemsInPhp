@@ -1,75 +1,57 @@
 <?php
 
-require_once(__DIR__.'/../../Autoloader.php');
-
 /**
 * PriorityQueue class
 *
-* Implementation of the priority queue data structure (in/out by priority)
+* Use SplPriorityQueue for Node objects
+* Conveniently provide an empty property, push() and pop() methods
+* instead of SplPriorityQueue's isEmpty(), insert(), and extract()
+* in order to keep the examples more consistent
 *
 * @package ClassicComputerScienceProblemsInPhp
-* @see Queue
+* @see SplPriorityQueue
 */
-class PriorityQueue extends Queue {
+class PriorityQueue extends SplPriorityQueue {
   /**
-  * Are all elements of type node?
-  * @var bool
+  * Magic getter
+  *
+  * @param string $property Property to read
+  * @return mixed Value of the property
   */
-  private $onlyNodes = TRUE;
+  public function __get($property) {
+    if ($property == 'empty') {
+      return $this->isEmpty();
+    }
+  }
 
   /**
-  * Push operation adds element and sorts the queue by priority
+  * Push operation
   *
-  * @param mixed $item The item to push onto the stack
+  * @param Node $node The node to insert into the priority queue
   */
-  public function push($item) {
-    if (!$this->isNode($item)) {
-      $this->onlyNodes = FALSE;
-    }
-    $this->_container[] = $item;
-    if ($this->onlyNodes) {
-      // If all items are of type Node, use their compare() method for sorting
-      usort(
-        $this->_container,
-        function ($a, $b) {
-          return $a->compare($b);
-        }
-      );
-    } else {
-      // Otherwise use PHP's built-in sorting order
-      sort($this->_container);
-    }
+  public function push(Node $node) {
+    parent::insert($node, $this->getPriority($node));
   }
 
   /**
   * Pop operation
   *
-  * Check whether all remaining items are nodes, let parent method handle the rest
-  *
-  * @return mixed Highest-priority item
+  * @return Node The highest-priority node
   */
-  public function pop() {
-    $result = parent::pop();
-    $this->onlyNodes = TRUE;
-    foreach ($this->_container as $item) {
-      if (!$this->isNode($item)) {
-        $this->onlyNodes = FALSE;
-        break;
-      }
-    }
-    return $result;
+  public function pop(): Node {
+    return parent::extract();
   }
 
   /**
-  * Internal helper method: Is this an object of type Node?
+  * Get priority for a node
   *
-  * @param mixed $item Item to test
-  * @return bool TRUE if Node, otherwise FALSE
+  * Using the negative value because we want the node
+  * with the lowest cost + heuristic first
+  *
+  * @param Node $node The node to get the priority value for
+  * @return float The priority
   */
-  protected function isNode($item): bool {
-    if (is_object($item) && get_class($item) == 'Node') {
-      return TRUE;
-    }
-    return FALSE;
+  protected function getPriority(Node $node): float {
+    return -($node->cost + $node->heuristic);
   }
 }
