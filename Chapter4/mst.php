@@ -24,12 +24,12 @@ function totalWeight(array $wp): float {
 * Visit a specific vertex
 *
 * @param WeightedGraph $wg The weighted graph to visit a vertex in
-* @param PriorityQueue $pq The priority queue to add edges to
+* @param PriorityQueueWE $pq The priority queue to add edges to
 * @param array $visited List of vertices that have already been visited
 * @param int $index Index of the vertex to visit
 * @return array List of vertices that have already been visited, including current one
 */
-function visit(WeightedGraph $wg, PriorityQueue $pq, array $visited, int $index) {
+function visit(WeightedGraph $wg, PriorityQueueWE $pq, array $visited, int $index) {
   $visited[$index] = TRUE; // Mark as visited
   foreach ($wg->edgesForIndex($index) as $edge) {
     // Add all edges coming from here to $pq
@@ -52,7 +52,7 @@ function mst(WeightedGraph $wg, int $start = 0) {
     return NULL;
   }
   $result = []; // holds the final MST
-  $pq = new PriorityQueue();
+  $pq = new PriorityQueueWE();
   $visited = array_fill(0, $wg->vertexCount, FALSE); // where we've been
 
   // The first vertex is where everything starts
