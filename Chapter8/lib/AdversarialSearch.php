@@ -43,8 +43,8 @@ class AdversarialSearch {
       return $bestEval;
     } else { // minimizing
       $worstEval = INF;
-      foreach ($board->legalMoves as $move) {
-        $result = minimax(
+      foreach ($board->legalMoves() as $move) {
+        $result = self::minimax(
           $board->move($move),
           TRUE,
           $originalPlayer,
